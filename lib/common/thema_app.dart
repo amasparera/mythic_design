@@ -9,16 +9,21 @@ const Color line = Color(0xffDCDCDC);
 const Color inputBacgroud = Color(0xffF0F0F0);
 const Color greyScaleBackgroud = Color(0xffD9DBE9);
 const Color offWhite = Color(0xffFCFCFC);
+const Color whiteCard = Color(0xffffffff);
 
 const LinearGradient gradientAccent = LinearGradient(
     colors: [Color(0xff0000F6), Color(0xff9041FF)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight);
+const LinearGradient gradientButton = LinearGradient(
+    colors: [Color(0xff0038F5), Color(0xff9F03FF)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight);
 
 ThemeData thmeaSiang() {
   return ThemeData.light().copyWith(
     appBarTheme: _themaAppBar(),
-    scaffoldBackgroundColor: greyScaleBackgroud,
+    scaffoldBackgroundColor: offWhite,
     textTheme: GoogleFonts.epilogueTextTheme(),
   );
 }
