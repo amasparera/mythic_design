@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mythic_design/presentation/page/home_page.dart';
+import 'package:mythic_design/presentation/page/profile_page.dart';
 
-final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
+// final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 Route<dynamic>? navigasi(RouteSettings settings) {
   switch (settings.name) {
+    case "/":
+      return MaterialPageRoute(builder: (_) => const HomePage());
     case HomePage.route:
       return MaterialPageRoute(builder: (_) => const HomePage());
-    // case PopularMoviesPage.ROUTE_NAME:
-    //   return CupertinoPageRoute(builder: (_) => PopularMoviesPage());
+    case ProfilePage.routeName:
+      return MaterialPageRoute(builder: (_) => const ProfilePage());
     // case TopRatedMoviesPage.ROUTE_NAME:
     //   return CupertinoPageRoute(builder: (_) => TopRatedMoviesPage());
     // case MovieDetailPage.ROUTE_NAME:

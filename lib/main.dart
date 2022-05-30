@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: thmeaSiang(),
-        navigatorObservers: [routeObserver],
+        // navigatorObservers: [routeObserver],
         initialRoute: HomePage.route,
         onGenerateRoute: navigasi);
   }
