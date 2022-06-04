@@ -10,6 +10,7 @@ const Color inputBacgroud = Color(0xffF0F0F0);
 const Color greyScaleBackgroud = Color(0xffD9DBE9);
 const Color offWhite = Color(0xffFCFCFC);
 const Color whiteCard = Color(0xffffffff);
+const Color backgroundWhite = Color(0xffF8F8F8);
 
 const LinearGradient gradientAccent = LinearGradient(
     colors: [Color(0xff0000F6), Color(0xff9041FF)],
@@ -23,7 +24,7 @@ const LinearGradient gradientButton = LinearGradient(
 ThemeData thmeaSiang() {
   return ThemeData.light().copyWith(
     appBarTheme: _themaAppBar(),
-    scaffoldBackgroundColor: offWhite,
+    scaffoldBackgroundColor: backgroundWhite,
     textTheme: GoogleFonts.epilogueTextTheme(),
   );
 }

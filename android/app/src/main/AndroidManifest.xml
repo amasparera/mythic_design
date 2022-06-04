@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mythic_design">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="mythic_design"
         android:name="${applicationName}"

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/common/thema_app.dart';
+import 'package:mythic_design/presentation/page/detail_product_page.dart';
 import 'package:mythic_design/presentation/page/profile_page.dart';
+import 'package:mythic_design/presentation/provider/home_profider.dart';
+import 'package:provider/provider.dart';
 
 import '../widget/card_home.dart';
 
@@ -56,16 +60,31 @@ class HomePage extends StatelessWidget {
                   ],
                 )
               ],
-          body: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: 10 + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return coverHomeSearch(context);
-                }
-
-                return const CardHome();
-              })),
+          body: Consumer<HomeNotifier>(builder: (context, data, child) {
+            if (data.nowPlayingState == RequestState.loading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (data.nowPlayingState == RequestState.loaded) {
+              return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: data.listProducts.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return coverHomeSearch(context);
+                    }
+                    return CardHome(
+                      onTap: () =>
+                          Navigator.pushNamed(context, DetailProductPage.route),
+                      product: data.listProducts[index - 1],
+                      statusFavorite: data.listFavorite
+                          .contains(data.listProducts[index - 1].productId),
+                    );
+                  });
+            } else {
+              return Center(child: Text(data.message));
+            }
+          })),
     );
   }
 
@@ -104,7 +123,7 @@ class HomePage extends StatelessWidget {
                   const SizedBox(width: coverPading),
                   const Text(
                     "Search items, collections, and accounts",
-                    style: TextStyle(color: placeholder),
+                    style: TextStyle(color: placeholder, fontSize: 13),
                   )
                 ],
               ),
