@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/presentation/page/home_page.dart';
-import 'package:mythic_design/presentation/provider/home_profider.dart';
 import 'package:provider/provider.dart';
 
 import 'injection.dart' as di;
 
+import 'presentation/provider/home_nothifier.dart';
+import 'presentation/provider/profile_nithifier.dart';
 import 'route_name.dart';
 
 void main(List<String> args) {
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => di.locator<HomeNotifier>()),
+        ChangeNotifierProvider(create: (_) => di.locator<ProfileNothifier>()),
       ],
       child: MaterialApp(
           theme: thmeaSiang(),

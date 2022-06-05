@@ -3,16 +3,30 @@ import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/presentation/page/detail_product_page.dart';
-import 'package:mythic_design/presentation/page/profile_page.dart';
-import 'package:mythic_design/presentation/provider/home_profider.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/home_nothifier.dart';
 import '../widget/card_home.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static const String route = '/home';
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    Future.microtask(() => Provider.of<HomeNotifier>(context, listen: false)
+      ..getLogin()
+      ..getListFavorite()
+      ..fechProduct());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +61,8 @@ class HomePage extends StatelessWidget {
                     IconButton(
                         splashRadius: 20,
                         onPressed: () {
-                          Navigator.pushNamed(context, ProfilePage.routeName);
+                          Provider.of<HomeNotifier>(context, listen: false)
+                              .goToProfile(context);
                         },
                         icon: const CircleAvatar(
                           backgroundImage: NetworkImage(
@@ -111,7 +126,9 @@ class HomePage extends StatelessWidget {
               margin: const EdgeInsets.only(
                   top: coverPading * 2, bottom: coverPading * 1.5),
               width: MediaQuery.of(context).size.width * .88,
-              padding: const EdgeInsets.all(defaultPading / 2.2),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: defaultPading / 2.2,
+                  vertical: defaultPading / 2.5),
               decoration: BoxDecoration(
                   color: inputBacgroud,
                   borderRadius: BorderRadius.circular(defaultPading)),
@@ -119,7 +136,7 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset("asset/icons/Icon.png", width: coverPading * 2.2),
+                  Image.asset("asset/icons/Icon.png", width: coverPading * 2.1),
                   const SizedBox(width: coverPading),
                   const Text(
                     "Search items, collections, and accounts",

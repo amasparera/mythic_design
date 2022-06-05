@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mythic_design/domain/enities/product_media_image.dart';
 
 class Product extends Equatable {
   final String productId;
@@ -9,6 +10,10 @@ class Product extends Equatable {
   final String creatorId;
   final String creatorName;
   final String creatorImage;
+  final int? totalBuy;
+  final int? totalFavorite;
+  final String? description;
+  final List<ProductMediaImage>? listMediaImage;
 
   const Product(
       this.productId,
@@ -18,7 +23,11 @@ class Product extends Equatable {
       this.productStatusFavorite,
       this.creatorId,
       this.creatorName,
-      this.creatorImage);
+      this.creatorImage,
+      {this.description,
+      this.listMediaImage,
+      this.totalBuy,
+      this.totalFavorite});
 
   @override
   List<Object?> get props => [
