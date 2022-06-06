@@ -10,6 +10,6 @@ class GetUser {
   GetUser({required this.userRepository});
 
   Future<Either<Failure, User>> execute({required String id}) {
-    return userRepository.getUser(id: id);
+    return userRepository.getUser(userId: id);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mythic_design/common/helper_local.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/domain/enities/product.dart';
@@ -27,7 +26,7 @@ class HomeNotifier extends ChangeNotifier {
   late bool isLogin;
 
   Future<void> fechProduct() async {
-    print("1");
+  
     _nowProductState = RequestState.loading;
     notifyListeners();
 
@@ -52,12 +51,12 @@ class HomeNotifier extends ChangeNotifier {
   }
 
   void goToProfile(context) {
-    if (isLogin == true) {
+    // if (isLogin == true) {
       Navigator.pushNamed(context, ProfilePage.routeName);
-    } else {
-      if (kDebugMode) {
-        print("belum login");
-      }
-    }
+    // } else {
+    //   if (kDebugMode) {
+    //     print("belum login");
+    //   }
+    // }
   }
 }

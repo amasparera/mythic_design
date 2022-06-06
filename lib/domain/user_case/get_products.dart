@@ -9,7 +9,7 @@ class GetProducts {
   GetProducts({required this.productRepository});
 
   Future<Either<Failure, List<Product>>> execute() {
-    print(2);
+    
     return productRepository.getProducts();
   }
 }

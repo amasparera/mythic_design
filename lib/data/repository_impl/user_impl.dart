@@ -15,9 +15,9 @@ final UserRemoteDataSource userRemoteDataSource;
 
 
   @override
-  Future<Either<Failure, User>> getUser({required String id})async {
+  Future<Either<Failure, User>> getUser({required String userId})async {
     try {
-      final result = await userRemoteDataSource.getUser();
+      final result = await userRemoteDataSource.getUser(userId: userId);
       return Right(result.toEntity());
     } on DatabaseException {
       return const Left(FailureDatabase("No product yet."));

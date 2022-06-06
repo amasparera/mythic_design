@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/domain/enities/user.dart';
-import 'package:mythic_design/presentation/provider/profile_nithifier.dart';
+import 'package:mythic_design/presentation/provider/profile_nothifier.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/size.dart';

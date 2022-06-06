@@ -14,7 +14,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Either<Failure, List<Product>>> getProducts() async {
-    print(3);
+    
     try {
       final result = await remoteDataSource.getProducts();
       return Right(result.map((e) => e.toEntity()).toList());
@@ -28,9 +28,9 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<Either<Failure, Product>> getProductDetail() async {
+  Future<Either<Failure, Product>> getProductDetail({required String productId}) async {
     try {
-      final result = await remoteDataSource.getProductDetail();
+      final result = await remoteDataSource.getProductDetail(productId: productId);
       return Right(result.toEntity());
     } on DatabaseException {
       return const Left(FailureDatabase("No product yet."));

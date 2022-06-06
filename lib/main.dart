@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/thema_app.dart';
-import 'package:mythic_design/presentation/page/home_page.dart';
+import 'package:mythic_design/presentation/page/login_page.dart';
 import 'package:provider/provider.dart';
 
 import 'injection.dart' as di;
 
+import 'presentation/provider/detail_product_nothifier.dart';
 import 'presentation/provider/home_nothifier.dart';
-import 'presentation/provider/profile_nithifier.dart';
+import 'presentation/provider/login_nothifier.dart';
+import 'presentation/provider/profile_nothifier.dart';
 import 'route_name.dart';
 
 void main(List<String> args) {
@@ -23,11 +25,13 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => di.locator<HomeNotifier>()),
         ChangeNotifierProvider(create: (_) => di.locator<ProfileNothifier>()),
+        ChangeNotifierProvider(create: (_) => di.locator<LoginNothifier>()),
+        ChangeNotifierProvider(create: (_) => di.locator<ProductDetailNothifier>()),
       ],
       child: MaterialApp(
           theme: thmeaSiang(),
           // navigatorObservers: [routeObserver],
-          initialRoute: HomePage.route,
+          initialRoute: LoginPage.route,
           onGenerateRoute: navigasi),
     );
   }

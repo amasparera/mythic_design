@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mythic_design/presentation/page/home_page.dart';
+import 'package:mythic_design/presentation/page/login_page.dart';
 import 'package:mythic_design/presentation/page/profile_page.dart';
 
-import 'presentation/page/detail_product_page.dart';
+import 'presentation/page/product_detail_page.dart';
 
-// final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 Route<dynamic>? navigasi(RouteSettings settings) {
   switch (settings.name) {
@@ -14,8 +14,10 @@ Route<dynamic>? navigasi(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const HomePage());
     case ProfilePage.routeName:
       return MaterialPageRoute(builder: (_) => const ProfilePage());
-    case DetailProductPage.route:
-      return MaterialPageRoute(builder: (_) => const DetailProductPage());
+    case ProductDetailPage.route:
+      return MaterialPageRoute(builder: (_) => const ProductDetailPage());
+    case LoginPage.route:
+      return MaterialPageRoute(builder: (_) => const LoginPage());
     // case MovieDetailPage.ROUTE_NAME:
     //   final id = settings.arguments as int;
     //   return MaterialPageRoute(

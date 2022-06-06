@@ -42,11 +42,11 @@ class ProductModel extends Equatable {
         creatorId: map["CreatorId"],
         creatorName: map["CreatorName"],
         creatorImage: map["CreatorImage"],
-        description: map["description"],
-        totalBuy: map["totalBuy"],
-        totalFavorite: map["totalFavorite"],
-        listMediaImage: map["totalFavorite"] != null
-            ? (map["mediaImage"] as List<dynamic>)
+        description: map["Description"],
+        totalBuy: map["TotalBuy"],
+        totalFavorite: map["TotalFavorite"],
+        listMediaImage: map["ListMediaImage"] != null
+            ? (map["ListMediaImage"] as List<dynamic>)
                 .map((e) => ProductMediaImageModel.fromjson(e))
                 .toList()
             : null);

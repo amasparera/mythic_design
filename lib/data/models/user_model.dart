@@ -23,14 +23,14 @@ class UserModel extends Equatable {
 
   factory UserModel.fromjson(Map<String, dynamic> map) {
     return UserModel(
-        image: map["image"],
-        backgroundImage: map["backgroundImage"],
-        id: map["id"],
-        nameFist: map["nameFirt"],
-        nameLast: map["nameLast"],
-        email: map["email"],
-        bio: map["bio"],
-        creatAt: map["creatAt"]);
+        image: map["Image"],
+        backgroundImage: map["BackgroundImage"],
+        id: map["Id"],
+        nameFist: map["NameFirt"],
+        nameLast: map["NameLast"],
+        email: map["Email"],
+        bio: map["Bio"],
+        creatAt: map["CreatAt"]);
   }
 
   User toEntity() {

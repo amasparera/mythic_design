@@ -14,10 +14,10 @@ class ProductMediaImageModel extends Equatable {
 
   factory ProductMediaImageModel.fromjson(Map<String, dynamic> map) {
     return ProductMediaImageModel(
-        id: map["id"],
-        creatorId: map["creator"],
-        productId: map["productId"],
-        image: map["productImage"]);
+        id: map["Id"],
+        creatorId: map["CreatorId"],
+        productId: map["ProductId"],
+        image: map["Image"]);
   }
 
   @override

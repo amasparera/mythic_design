@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/common/thema_app.dart';
-import 'package:mythic_design/presentation/page/detail_product_page.dart';
+import 'package:mythic_design/presentation/page/product_detail_page.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/home_nothifier.dart';
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                           Provider.of<HomeNotifier>(context, listen: false)
                               .goToProfile(context);
                         },
-                        icon: const CircleAvatar(
+                        icon: const CircleAvatar(backgroundColor: Colors.grey,
                           backgroundImage: NetworkImage(
                               "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880"),
                           radius: 15,
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     }
                     return CardHome(
                       onTap: () =>
-                          Navigator.pushNamed(context, DetailProductPage.route),
+                          Navigator.pushNamed(context, ProductDetailPage.route),
                       product: data.listProducts[index - 1],
                       statusFavorite: data.listFavorite
                           .contains(data.listProducts[index - 1].productId),
