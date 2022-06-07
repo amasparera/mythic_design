@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/thema_app.dart';
-import 'package:mythic_design/presentation/page/login_page.dart';
+import 'package:mythic_design/presentation/page/home_page.dart';
 import 'package:provider/provider.dart';
 
 import 'injection.dart' as di;
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           theme: thmeaSiang(),
           // navigatorObservers: [routeObserver],
-          initialRoute: LoginPage.route,
+          initialRoute: HomePage.route,
           onGenerateRoute: navigasi),
     );
   }

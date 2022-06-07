@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mythic_design/presentation/page/home_page.dart';
 import 'package:mythic_design/presentation/page/login_page.dart';
+import 'package:mythic_design/presentation/page/profile_creator_page.dart';
 import 'package:mythic_design/presentation/page/profile_page.dart';
+import 'package:mythic_design/presentation/page/search_page.dart';
 
 import 'presentation/page/product_detail_page.dart';
 
@@ -18,6 +20,10 @@ Route<dynamic>? navigasi(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const ProductDetailPage());
     case LoginPage.route:
       return MaterialPageRoute(builder: (_) => const LoginPage());
+    case ProfileCreatorPage.route:
+      return MaterialPageRoute(builder: (_) => const ProfileCreatorPage());
+    case SearchPage.route:
+      return MaterialPageRoute(builder: (_) => const SearchPage());
     // case MovieDetailPage.ROUTE_NAME:
     //   final id = settings.arguments as int;
     //   return MaterialPageRoute(

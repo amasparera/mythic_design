@@ -100,7 +100,7 @@ class LoginPage extends StatelessWidget {
           child: MaterialButton(
             onPressed: () {},
             child: const Text(
-              "Login",
+              "SingUp",
               style: TextStyle(
                   color: offWhite, fontWeight: FontWeight.bold, fontSize: 18),
             ),

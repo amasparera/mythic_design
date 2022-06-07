@@ -15,6 +15,7 @@ import 'data/repository_impl/product_impl.dart';
 import 'presentation/provider/home_nothifier.dart';
 import 'presentation/provider/login_nothifier.dart';
 import 'presentation/provider/profile_nothifier.dart';
+import 'presentation/provider/search_nothifier.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -25,8 +26,8 @@ void init() async {
   locator.registerFactory(() => ProfileNothifier(getUser: locator()));
   locator.registerFactory(
       () => ProductDetailNothifier(getProductDetail: locator()));
-  locator.registerFactory(
-      () => LoginNothifier());
+  locator.registerFactory(() => LoginNothifier());
+  locator.registerFactory(() => SearchNothifier());
 
   // use case
   locator

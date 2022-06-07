@@ -3,6 +3,7 @@ import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/domain/enities/user.dart';
 import 'package:mythic_design/presentation/provider/profile_nothifier.dart';
+import 'package:mythic_design/presentation/widget/bottol_app.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/size.dart';
@@ -19,8 +20,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
-    Future.microtask(() =>
-        Provider.of<ProfileNothifier>(context, listen: false)..fecthUser());
+    Future.microtask(() => context.read<ProfileNothifier>()..fecthUser());
     super.initState();
   }
 
@@ -159,7 +159,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: offWhite, fontWeight: FontWeight.bold, fontSize: 18),
             ),
           ),
-        )
+        ),
+        const SizedBox(height: defaultPading * 3),
+        const BottomApp(),
       ],
     );
   }

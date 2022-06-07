@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/domain/enities/product.dart';
+import 'package:mythic_design/presentation/page/profile_creator_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/requeststate.dart';
@@ -163,34 +164,42 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                  padding: const EdgeInsets.all(1),
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color: const Color(0x0ff00000).withOpacity(.029),
-                        blurRadius: 13.27,
-                        offset: const Offset(0, 10.14))
-                  ], color: offWhite, borderRadius: BorderRadius.circular(30)),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        backgroundImage: NetworkImage(product.creatorImage),
-                        radius: 16,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPading),
-                        child: Text(
-                          product.creatorName,
-                          style: const TextStyle(
-                              color: body,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed(ProfileCreatorPage.route);
+                },
+                child: Container(
+                    padding: const EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: const Color(0x0ff00000).withOpacity(.029),
+                              blurRadius: 13.27,
+                              offset: const Offset(0, 10.14))
+                        ],
+                        color: offWhite,
+                        borderRadius: BorderRadius.circular(30)),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          backgroundImage: NetworkImage(product.creatorImage),
+                          radius: 16,
                         ),
-                      )
-                    ],
-                  )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPading),
+                          child: Text(
+                            product.creatorName,
+                            style: const TextStyle(
+                                color: body,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ),
+                        )
+                      ],
+                    )),
+              ),
               const Spacer(),
               Container(
                   padding: const EdgeInsets.all(2),

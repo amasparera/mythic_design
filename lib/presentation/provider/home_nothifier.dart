@@ -4,6 +4,7 @@ import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/domain/enities/product.dart';
 import 'package:mythic_design/domain/user_case/get_products.dart';
 import 'package:mythic_design/presentation/page/profile_page.dart';
+import 'package:mythic_design/presentation/page/search_page.dart';
 
 class HomeNotifier extends ChangeNotifier {
   final GetProducts getProducts;
@@ -58,5 +59,9 @@ class HomeNotifier extends ChangeNotifier {
     //     print("belum login");
     //   }
     // }
+  }
+
+  void goToSeach(context){
+    Navigator.pushNamed(context, SearchPage.route);
   }
 }

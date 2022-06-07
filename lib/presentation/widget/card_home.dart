@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/domain/enities/product.dart';
+import 'package:mythic_design/presentation/page/profile_creator_page.dart';
 
 import '../../common/size.dart';
 import 'buy_current.dart';
@@ -50,10 +51,15 @@ class CardHome extends StatelessWidget {
             const SizedBox(height: coverPading),
             Row(
               children: [
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.grey,
-                  backgroundImage: NetworkImage(product.creatorImage),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(ProfileCreatorPage.route);
+                  },
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: NetworkImage(product.creatorImage),
+                  ),
                 ),
                 const SizedBox(width: coverPading / 2),
                 Expanded(
