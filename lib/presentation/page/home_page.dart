@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/common/thema_app.dart';
+import 'package:mythic_design/presentation/page/notifikasi_page.dart';
 import 'package:mythic_design/presentation/page/product_detail_page.dart';
-import 'package:mythic_design/presentation/widget/custom_search.dart';
+import 'package:mythic_design/presentation/page/wishlist_page.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/home_nothifier.dart';
@@ -22,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     Future.microtask(() => context.read<HomeNotifier>()
-      ..getLogin()
+      ..getProfileImage()
       ..getListFavorite()
       ..fechProduct());
     super.initState();
@@ -47,14 +50,18 @@ class _HomePageState extends State<HomePage> {
                   actions: [
                     IconButton(
                         splashRadius: 20,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, NotifikasiPage.route);
+                        },
                         icon: Image.asset(
                           "asset/icons/Notification.png",
                           width: 24,
                         )),
                     IconButton(
                         splashRadius: 20,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, WishlistPage.route);
+                        },
                         icon: Image.asset(
                           "asset/icons/Cart.png",
                           width: 24,
@@ -64,11 +71,12 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           context.read<HomeNotifier>().goToProfile(context);
                         },
-                        icon: const CircleAvatar(
+                        icon:  CircleAvatar(
                           backgroundColor: Colors.grey,
-                          backgroundImage: NetworkImage(
-                              "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880"),
+                          backgroundImage: context.read<HomeNotifier>().profilleImage!= null?  NetworkImage(
+                              context.read<HomeNotifier>().profilleImage!) : null,
                           radius: 15,
+                          child:context.read<HomeNotifier>().profilleImage== null? const Icon(Icons.person,color: Colors.white,) : null,
                         )),
                     const SizedBox(
                       width: defaultPading / 4,

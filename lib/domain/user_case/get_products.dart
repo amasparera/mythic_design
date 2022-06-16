@@ -8,8 +8,8 @@ class GetProducts {
 
   GetProducts({required this.productRepository});
 
-  Future<Either<Failure, List<Product>>> execute() {
+  Future<Either<Failure, List<Product>>> execute({required int page}) {
     
-    return productRepository.getProducts();
+    return productRepository.getProducts(page: page);
   }
 }

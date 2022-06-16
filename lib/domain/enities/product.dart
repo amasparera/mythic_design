@@ -6,7 +6,7 @@ class Product extends Equatable {
   final String productName;
   final String productImage;
   final int productPrice;
-  final String productStatusFavorite;
+  final String creatAt;
   final String creatorId;
   final String creatorName;
   final String creatorImage;
@@ -20,7 +20,7 @@ class Product extends Equatable {
       this.productName,
       this.productImage,
       this.productPrice,
-      this.productStatusFavorite,
+      this.creatAt,
       this.creatorId,
       this.creatorName,
       this.creatorImage,
@@ -35,7 +35,7 @@ class Product extends Equatable {
         productImage,
         productImage,
         productName,
-        productStatusFavorite,
+        creatAt,
         creatorId,
         creatorImage,
         creatorName

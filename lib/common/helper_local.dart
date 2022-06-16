@@ -4,6 +4,9 @@ class HelperLocal {
   // KEY
   final String keyFavorite = "KEY_FAVORITE";
   final String keyLogin = "KEY_LOGIN";
+  final String keyProfileId = "KEY_PROFILE_ID";
+  final String keyToken = "KEY_TOKEN";
+  final String keyProfileImage = "KEY_PROFILE_IMAGE";
 
   // save
   saveFavorite(List<String> listIdFavorite) async {
@@ -16,6 +19,21 @@ class HelperLocal {
     await local.setBool(keyLogin, login);
   }
 
+  saveProfileImage({required String image}) async {
+    final local = await SharedPreferences.getInstance();
+    await local.setString(keyProfileImage, image);
+  }
+
+  saveProfileId({required String image}) async {
+    final local = await SharedPreferences.getInstance();
+    await local.setString(keyProfileImage, image);
+  }
+
+  saveToken({required String token}) async {
+    final local = await SharedPreferences.getInstance();
+    await local.setString(keyToken, token);
+  }
+
   // load
   Future<List<String>?> loadFavorite() async {
     final local = await SharedPreferences.getInstance();
@@ -25,5 +43,20 @@ class HelperLocal {
   Future<bool> loadLogin() async {
     final local = await SharedPreferences.getInstance();
     return local.getBool(keyLogin) ?? false;
+  }
+
+  Future<String?> loadProfileImage() async {
+    final local = await SharedPreferences.getInstance();
+    return local.getString(keyProfileImage);
+  }
+
+  Future<String?> loadProfileId() async {
+    final local = await SharedPreferences.getInstance();
+    return local.getString(keyProfileId);
+  }
+
+  Future<String?> loadToken()async {
+    final local = await SharedPreferences.getInstance();
+    return local.getString(keyToken);
   }
 }

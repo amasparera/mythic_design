@@ -9,7 +9,7 @@ import '../models/product_model.dart';
 // class repository utama
 
 abstract class ProductRemoteDataSource {
-  Future<List<ProductModel>> getProducts();
+  Future<List<ProductModel>> getProducts({required int page});
   Future<ProductModel> getProductDetail({required String productId});
 }
 
@@ -21,13 +21,14 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   ProductRemoteDataSourceImpl({required this.client, required this.apiUrl});
 
   @override
-  Future<List<ProductModel>> getProducts() async {
+  Future<List<ProductModel>> getProducts({required int page}) async {
     final respone =
-        await client.get(Uri.parse(apiUrl.baseUrl + apiUrl.getProducts));
+        await client.get(Uri.parse(apiUrl.baseUrl + apiUrl.getProducts + page.toString()));
     var body = jsonDecode(respone.body);
-    if (respone.statusCode == 200 && body != null) {
+    print(body);
+    if (respone.statusCode == 200) {
       return List<ProductModel>.from(
-          (body as List<dynamic>).map((x) => ProductModel.fromjson(x)));
+          (body["data"] as List<dynamic>).map((x) => ProductModel.fromjson(x)));
       // } else if (body["data"] == null) {
       //   throw DatabaseException(message: body["error"]);
     } else {

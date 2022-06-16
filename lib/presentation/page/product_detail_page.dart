@@ -3,6 +3,7 @@ import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/domain/enities/product.dart';
 import 'package:mythic_design/presentation/page/profile_creator_page.dart';
+import 'package:mythic_design/presentation/widget/animasi_fade_in.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/requeststate.dart';
@@ -69,8 +70,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         Column(
             children: List.generate(
                 product.listMediaImage!.length,
-                (index) => Image.network(product.listMediaImage![index].image,
-                    fit: BoxFit.fitWidth))),
+                (index) => FadeIn(
+                      delay: Duration(milliseconds: 300 * index),
+                      child: Image.network(product.listMediaImage![index].image,
+                          fit: BoxFit.fitWidth),
+                    ))),
         FutureBuilder(
             future: Future.delayed(const Duration(seconds: 1)),
             builder: (context, state) {

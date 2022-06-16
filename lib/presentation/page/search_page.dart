@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mythic_design/presentation/widget/animasi_fade_in.dart';
 
 import '../../common/size.dart';
 import '../../common/thema_app.dart';
@@ -10,7 +11,14 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  List<String> category = ["All Populer", "New", "High Price", "Low Price","Icon","Template"];
+    List<String> category = [
+      "All Populer",
+      "New",
+      "High Price",
+      "Low Price",
+      "Icon",
+      "Template"
+    ];
     return DefaultTabController(
         length: category.length,
         child: Scaffold(
@@ -38,7 +46,7 @@ class SearchPage extends StatelessWidget {
                 Expanded(
                   child: TextField(
                       onChanged: (value) {
-                        print("mulai $value");
+                        // print("mulai $value");
                       },
                       decoration: const InputDecoration(
                         border: InputBorder.none,
@@ -52,33 +60,45 @@ class SearchPage extends StatelessWidget {
           ),
           Container(
               alignment: Alignment.centerLeft,
-              height: 50,
+              height: 40,
+              margin: const EdgeInsets.symmetric(horizontal: defaultPading),
               padding: const EdgeInsets.symmetric(vertical: defaultPading / 2),
               child: TabBar(
+                  indicatorPadding: const EdgeInsets.symmetric(horizontal: 4),
                   onTap: (value) {
-                    print(value);
+                    // print(value);
                   },
-                  indicator: const BoxDecoration(color: Colors.black),
+                  indicator: BoxDecoration(
+                      // color: Colors.black,
+                      gradient: gradientButton,
+                      borderRadius: BorderRadius.circular(20)),
                   isScrollable: true,
+                  splashBorderRadius: BorderRadius.circular(20),
+                  unselectedLabelStyle: const TextStyle(
+                      color: label, fontWeight: FontWeight.bold),
+                  unselectedLabelColor: label,
                   tabs: List.generate(
                       category.length,
                       (index) => Tab(
-                            child: Text(category[index]),
+                            text: category[index],
                           )))),
           Expanded(
               child: TabBarView(
                   children: List.generate(
             category.length,
             (index) => GridView.builder(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 4, vertical: defaultPading),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisSpacing: 4, mainAxisSpacing: 4, crossAxisCount: 2),
-                itemCount: 14,
-                itemBuilder: (context, index) => Container(
-                      color: Colors.amber,
+                itemCount: 13,
+                itemBuilder: (context, index) => FadeIn(
+                      delay: Duration(milliseconds: 100 * index),
+                      child: Container(
+                        color: Colors.amber,
+                      ),
                     )),
           )))
         ]))));
   }
 }
-
-

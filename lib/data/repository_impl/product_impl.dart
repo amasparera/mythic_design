@@ -13,10 +13,10 @@ class ProductRepositoryImpl implements ProductRepository {
   ProductRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, List<Product>>> getProducts() async {
+  Future<Either<Failure, List<Product>>> getProducts({required int page}) async {
     
     try {
-      final result = await remoteDataSource.getProducts();
+      final result = await remoteDataSource.getProducts(page: page);
       return Right(result.map((e) => e.toEntity()).toList());
     } on DatabaseException {
       return const Left(FailureDatabase("No product yet."));

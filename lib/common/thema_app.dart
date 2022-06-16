@@ -30,7 +30,13 @@ ThemeData thmeaSiang() {
 }
 
 AppBarTheme _themaAppBar() {
-  return AppBarTheme(backgroundColor: offWhite, iconTheme: _themaIcon());
+  return AppBarTheme(
+      backgroundColor: offWhite,
+      iconTheme: _themaIcon(),
+      elevation: 1,
+      
+      titleTextStyle: const TextStyle(
+          color: body, fontSize: 20, fontWeight: FontWeight.bold));
 }
 
 IconThemeData _themaIcon() {

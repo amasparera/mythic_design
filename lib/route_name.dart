@@ -1,12 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mythic_design/presentation/page/home_page.dart';
 import 'package:mythic_design/presentation/page/login_page.dart';
+import 'package:mythic_design/presentation/page/notifikasi_page.dart';
 import 'package:mythic_design/presentation/page/profile_creator_page.dart';
 import 'package:mythic_design/presentation/page/profile_page.dart';
 import 'package:mythic_design/presentation/page/search_page.dart';
+import 'package:mythic_design/presentation/page/wishlist_page.dart';
 
 import 'presentation/page/product_detail_page.dart';
-
 
 Route<dynamic>? navigasi(RouteSettings settings) {
   switch (settings.name) {
@@ -30,8 +32,10 @@ Route<dynamic>? navigasi(RouteSettings settings) {
     //     builder: (_) => MovieDetailPage(id: id),
     //     settings: settings,
     //   );
-    // case SearchPage.ROUTE_NAME:
-    //   return CupertinoPageRoute(builder: (_) => SearchPage());
+    case NotifikasiPage.route:
+      return CupertinoPageRoute(builder: (_) => const NotifikasiPage());
+    case WishlistPage.route:
+      return CupertinoPageRoute(builder: (_) => const WishlistPage());
     // case WatchlistMoviesPage.ROUTE_NAME:
     //   return MaterialPageRoute(builder: (_) => WatchlistMoviesPage());
     // case AboutPage.ROUTE_NAME:
