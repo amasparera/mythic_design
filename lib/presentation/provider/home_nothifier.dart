@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/helper_local.dart';
 import 'package:mythic_design/common/requeststate.dart';
@@ -54,8 +53,7 @@ class HomeNotifier extends ChangeNotifier {
     var isLogin = await helperLocal.loadLogin();
     if (isLogin) {
       profilleImage = await helperLocal.loadProfileImage();
-      print(profilleImage);
-      print(isLogin);
+   
       notifyListeners();
     }
   }
