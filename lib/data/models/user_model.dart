@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:mythic_design/domain/enities/user.dart';
 
 class UserModel extends Equatable {
-  final String id;
+  final int id;
   final String nameFist;
   final String nameLast;
   final String email;
@@ -23,14 +23,14 @@ class UserModel extends Equatable {
 
   factory UserModel.fromjson(Map<String, dynamic> map) {
     return UserModel(
-        image: map["Image"],
-        backgroundImage: map["BackgroundImage"],
-        id: map["Id"],
-        nameFist: map["NameFirt"],
-        nameLast: map["NameLast"],
-        email: map["Email"],
-        bio: map["Bio"],
-        creatAt: map["CreatAt"]);
+        image: map["image"] != ""? "http://10.0.2.2:8000/public/${map["image"]}" : "",
+        backgroundImage: map["backgroundImage"] != ""? "http://10.0.2.2:8000/public/${map["backgroundImage"]}" : "",
+        id: map["id"],
+        nameFist: map["name"],
+        nameLast: map["nameLast"] ?? "",
+        email: map["email"],
+        bio: map["bio"],
+        creatAt: map["creatAt"]);
   }
 
   User toEntity() {
@@ -39,7 +39,7 @@ class UserModel extends Equatable {
         bio: bio,
         creatAt: creatAt,
         email: email,
-        id: id,
+        id: id.toString(),
         image: image,
         nameFist: nameFist,
         nameLast: nameLast);

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/size.dart';
@@ -9,6 +7,7 @@ import 'package:mythic_design/presentation/page/product_detail_page.dart';
 import 'package:mythic_design/presentation/page/wishlist_page.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/helper_local.dart';
 import '../provider/home_nothifier.dart';
 import '../widget/card_home.dart';
 
@@ -25,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     Future.microtask(() => context.read<HomeNotifier>()
-      ..getProfileImage()
+      ..getlogin()
       ..getListFavorite()
       ..fechProduct());
     super.initState();
@@ -34,6 +33,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        HelperLocal().saveLogin(login: false);
+        HelperLocal().resetData();
+      }),
       body: NestedScrollView(
           floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -71,13 +74,24 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           context.read<HomeNotifier>().goToProfile(context);
                         },
-                        icon:  CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          backgroundImage: context.read<HomeNotifier>().profilleImage!= null?  NetworkImage(
-                              context.read<HomeNotifier>().profilleImage!) : null,
-                          radius: 15,
-                          child:context.read<HomeNotifier>().profilleImage== null? const Icon(Icons.person,color: Colors.white,) : null,
-                        )),
+                        icon:
+                            Consumer<HomeNotifier>(builder: (context, data, _) {
+                          return CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            backgroundImage: data.profilleImage != null ||
+                                    data.profilleImage == ""
+                                ? NetworkImage(data.profilleImage!)
+                                : null,
+                            radius: 15,
+                            child: data.profilleImage == null ||
+                                    data.profilleImage == ""
+                                ? const Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                  )
+                                : null,
+                          );
+                        })),
                     const SizedBox(
                       width: defaultPading / 4,
                     )
@@ -98,8 +112,9 @@ class _HomePageState extends State<HomePage> {
                       return coverHomeSearch(context);
                     }
                     return CardHome(
-                      onTap: () =>
-                          Navigator.pushNamed(context, ProductDetailPage.route),
+                      onTap: () => Navigator.pushNamed(
+                          context, ProductDetailPage.route,
+                          arguments: data.listProducts[index - 1].productId),
                       product: data.listProducts[index - 1],
                       statusFavorite: data.listFavorite
                           .contains(data.listProducts[index - 1].productId),

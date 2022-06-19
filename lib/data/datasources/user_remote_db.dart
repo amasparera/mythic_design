@@ -22,9 +22,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     var json = jsonDecode(respone.body);
 
     if (respone.statusCode == 200) {
-      return UserModel.fromjson(json);
+      return UserModel.fromjson(json["data"]);
     } else {
-      throw ServerException();
+      throw ServerException(message: json["message"]);
     }
   }
 }

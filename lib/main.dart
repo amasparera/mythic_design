@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'injection.dart' as di;
 
+import 'presentation/provider/creator_nothifier.dart';
 import 'presentation/provider/detail_product_nothifier.dart';
 import 'presentation/provider/home_nothifier.dart';
 import 'presentation/provider/login_nothifier.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.locator<ProfileNothifier>()),
         ChangeNotifierProvider(create: (_) => di.locator<LoginNothifier>()),
         ChangeNotifierProvider(create: (_) => di.locator<ProductDetailNothifier>()),
+        ChangeNotifierProvider(create: (_) => di.locator<CreatorNothifier>()),
       ],
       child: MaterialApp(
           theme: thmeaSiang(),

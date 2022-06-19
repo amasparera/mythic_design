@@ -17,11 +17,11 @@ class ProductDetailNothifier extends ChangeNotifier {
   String _message = "";
   String get message => _message;
 
-  Future<void> fechProductDetail() async {
+  Future<void> fechProductDetail(String productId) async {
     _nowProductDetailState = RequestState.loading;
     notifyListeners();
 
-    final result = await getProductDetail.execute(productId: "1");
+    final result = await getProductDetail.execute(productId: productId);
     result.fold((l) {
       _message = l.message;
       _nowProductDetailState = RequestState.error;

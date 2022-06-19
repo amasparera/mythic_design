@@ -32,21 +32,25 @@ class ProductModel extends Equatable {
     this.listMediaImage,
   });
 
-  factory ProductModel.fromjson(Map<String, dynamic> map) {
+  factory ProductModel.fromjson(Map<String, dynamic> map, image) {
     return ProductModel(
         productId: map["productId"],
         productName: map["productTilte"],
-        productImage: "http://10.0.2.2:8000/public/${map["productCover"]}",
+        productImage: map["productCover"] != ""
+            ? "http://10.0.2.2:8000/public/${map["productCover"]}"
+            : "",
         productPrice: map["productPrice"],
-        productCreate: map["creatAt"] ,
+        productCreate: map["creatAt"],
         creatorId: map["creatorId"],
         creatorName: map["creatorName"],
-        creatorImage: "http://10.0.2.2:8000/public/${map["creatorImage"]}",
-        description: map["description"] ,
+        creatorImage: map["creatorImage"] != ""
+            ? "http://10.0.2.2:8000/public/${map["creatorImage"]}"
+            : "",
+        description: map["description"] ?? "",
         totalBuy: map["productBuy"],
         totalFavorite: map["productLove"],
-        listMediaImage: map["listMediaImage"] != null
-            ? (map["ListMediaImage"] as List<dynamic>)
+        listMediaImage: image != null
+            ? (image as List<dynamic>)
                 .map((e) => ProductMediaImageModel.fromjson(e))
                 .toList()
             : null);
@@ -68,10 +72,10 @@ class ProductModel extends Equatable {
         listMediaImage: listMediaImage != null
             ? listMediaImage!
                 .map((e) => ProductMediaImage(
-                    id: e.id,
-                    creatorId: e.creatorId,
+                    id: e.id.toString(),
                     productId: e.productId,
-                    image: e.image))
+                    image: e.image,
+                    creatorId: ''))
                 .toList()
             : null);
   }

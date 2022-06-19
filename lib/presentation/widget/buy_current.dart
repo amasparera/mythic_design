@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mythic_design/common/size.dart';
 
 import '../../common/thema_app.dart';
 
 class BuyCurrent extends StatelessWidget {
-  const BuyCurrent({
+   BuyCurrent({
     Key? key, required this.price,
   }) : super(key: key);
 
   final int price;
+
+  NumberFormat currencyFormatter = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp ',
+      decimalDigits: 2,
+    );
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +47,7 @@ class BuyCurrent extends StatelessWidget {
                   style: TextStyle(color: label),
                 ),
                 Text(
-                  "Rp. $price",
+                 currencyFormatter.format(price),
                   style: const TextStyle(
                       color: titleActive,
                       fontSize: 16,

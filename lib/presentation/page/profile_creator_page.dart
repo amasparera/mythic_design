@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:mythic_design/presentation/provider/creator_nothifier.dart';
 import 'package:mythic_design/presentation/widget/bottol_app.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/size.dart';
 import '../../common/thema_app.dart';
 import '../widget/wrap_sosial_media.dart';
 
-class ProfileCreatorPage extends StatelessWidget {
-  const ProfileCreatorPage({Key? key}) : super(key: key);
+class ProfileCreatorPage extends StatefulWidget {
+  final String creatorId;
+  const ProfileCreatorPage({Key? key, required this.creatorId})
+      : super(key: key);
 
   static const String route = "/profile-creator";
+
+  @override
+  State<ProfileCreatorPage> createState() => _ProfileCreatorPageState();
+}
+
+class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +50,24 @@ class ProfileCreatorPage extends StatelessWidget {
                 "asset/icons/Cart.png",
                 width: 24,
               )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const CircleAvatar(
-                backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(
-                    "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880"),
-                radius: 15,
-              )),
+          Consumer<CreatorNothifier>(
+            builder: (context, data, _) => IconButton(
+                splashRadius: 20,
+                onPressed: () {},
+                icon: CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  backgroundImage: data.imageProfile != ""
+                      ? NetworkImage(data.imageProfile)
+                      : null,
+                  radius: 15,
+                  child: data.imageProfile != ""
+                      ? null
+                      : const Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                )),
+          ),
           const SizedBox(
             width: defaultPading / 4,
           )

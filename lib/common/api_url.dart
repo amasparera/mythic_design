@@ -14,4 +14,7 @@ class ApiUrl {
   // api product
   final String getProducts = "/api/home/";
   final String getProductDetail = "/api/product/";
+
+  // creator
+  final String getCreator = "/api/creator/";
 }

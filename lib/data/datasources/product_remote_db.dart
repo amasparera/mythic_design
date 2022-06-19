@@ -22,18 +22,17 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   @override
   Future<List<ProductModel>> getProducts({required int page}) async {
-    final respone =
-        await client.get(Uri.parse(apiUrl.baseUrl + apiUrl.getProducts + page.toString()));
+    final respone = await client
+        .get(Uri.parse(apiUrl.baseUrl + apiUrl.getProducts + page.toString()));
     var body = jsonDecode(respone.body);
-    print(body);
+
     if (respone.statusCode == 200) {
       return List<ProductModel>.from(
-          (body["data"] as List<dynamic>).map((x) => ProductModel.fromjson(x)));
-      // } else if (body["data"] == null) {
-      //   throw DatabaseException(message: body["error"]);
+          (body["data"] as List<dynamic>).map((x) => ProductModel.fromjson(x,null)));
     } else {
-      throw ServerException();
+      throw ServerException(message: body["message"]);
     }
+    
   }
 
   @override
@@ -43,11 +42,9 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
     var body = jsonDecode(respone.body);
 
     if (respone.statusCode == 200 && body != null) {
-      return ProductModel.fromjson(body);
-      // } else if (body== null) {
-      //   throw DatabaseException(message: body["error"]);
+      return ProductModel.fromjson(body["data"],body["image"]);
     } else {
-      throw ServerException();
+      throw ServerException(message: body["message"]);
     }
   }
 }

@@ -19,12 +19,12 @@ final UserRemoteDataSource userRemoteDataSource;
     try {
       final result = await userRemoteDataSource.getUser(userId: userId);
       return Right(result.toEntity());
-    } on DatabaseException {
-      return const Left(FailureDatabase("No product yet."));
-    } on ServerException {
-      return const Left(FailureServer("Filed to connect to the server."));
-    } on SocketException {
-      return const Left(FailureConnection("Filed to connect to the network."));
+   } on DatabaseException catch(e) {
+      return  Left(FailureDatabase(e.message!));
+    } on ServerException catch(e) {
+      return  Left(FailureServer(e.message!));
+    } on SocketException catch(e) {
+      return  Left(FailureConnection(e.message));
     }
   }
 }

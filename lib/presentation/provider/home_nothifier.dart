@@ -24,7 +24,7 @@ class HomeNotifier extends ChangeNotifier {
   List<String> _listFaforite = [];
   List<String> get listFavorite => _listFaforite;
 
-  String _message = ' ';
+  String _message = '';
   String get message => _message;
 
   int page = 0;
@@ -48,17 +48,25 @@ class HomeNotifier extends ChangeNotifier {
     });
   }
 
-  Future<void> getProfileImage() async {
+  Future<void> getlogin() async {
+    profilleImage = null;
     page = 0;
-    profilleImage = await helperLocal.loadProfileImage();
+    var isLogin = await helperLocal.loadLogin();
+    if (isLogin) {
+      profilleImage = await helperLocal.loadProfileImage();
+      print(profilleImage);
+      print(isLogin);
+      notifyListeners();
+    }
   }
 
   Future<void> getListFavorite() async {
     _listFaforite = await helperLocal.loadFavorite() ?? [];
   }
 
-  void goToProfile(context) {
-    if (profilleImage != null) {
+  void goToProfile(context) async{
+    bool login =await helperLocal.loadLogin();
+    if (login) {
       Navigator.pushNamed(context, ProfilePage.routeName);
     } else {
       showModalBottomSheet(

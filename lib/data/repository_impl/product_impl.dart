@@ -18,12 +18,12 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       final result = await remoteDataSource.getProducts(page: page);
       return Right(result.map((e) => e.toEntity()).toList());
-    } on DatabaseException {
-      return const Left(FailureDatabase("No product yet."));
-    } on ServerException {
-      return const Left(FailureServer("Filed to connect to the server."));
-    } on SocketException {
-      return const Left(FailureConnection("Filed to connect to the network."));
+    } on DatabaseException catch(e) {
+      return  Left(FailureDatabase(e.message!));
+    } on ServerException catch(e) {
+      return  Left(FailureServer(e.message!));
+    } on SocketException catch(e) {
+      return  Left(FailureConnection(e.message));
     }
   }
 
@@ -32,12 +32,12 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       final result = await remoteDataSource.getProductDetail(productId: productId);
       return Right(result.toEntity());
-    } on DatabaseException {
-      return const Left(FailureDatabase("No product yet."));
-    } on ServerException {
-      return const Left(FailureServer("Filed to connect to the server."));
-    } on SocketException {
-      return const Left(FailureConnection("Filed to connect to the network."));
+    } on DatabaseException catch(e) {
+      return  Left(FailureDatabase(e.message!));
+    } on ServerException catch(e) {
+      return  Left(FailureServer(e.message!));
+    } on SocketException catch(e) {
+      return  Left(FailureConnection(e.message));
     }
   }
 }

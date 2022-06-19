@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mythic_design/common/api_url.dart';
 import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/domain/enities/product.dart';
@@ -10,7 +11,9 @@ import '../../common/requeststate.dart';
 import '../provider/detail_product_nothifier.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  const ProductDetailPage({Key? key}) : super(key: key);
+  final String productId;
+  const ProductDetailPage({Key? key, required this.productId})
+      : super(key: key);
 
   static const String route = "/detail-product";
 
@@ -21,8 +24,8 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   void initState() {
-    Future.microtask(
-        () => context.read<ProductDetailNothifier>()..fechProductDetail());
+    Future.microtask(() => context.read<ProductDetailNothifier>()
+      ..fechProductDetail(widget.productId));
 
     super.initState();
   }
@@ -72,7 +75,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 product.listMediaImage!.length,
                 (index) => FadeIn(
                       delay: Duration(milliseconds: 300 * index),
-                      child: Image.network(product.listMediaImage![index].image,
+                      child: Image.network("${ApiUrl().baseUrl}/public/${product.listMediaImage![index].image}",
                           fit: BoxFit.fitWidth),
                     ))),
         FutureBuilder(

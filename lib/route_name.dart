@@ -18,12 +18,12 @@ Route<dynamic>? navigasi(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const HomePage());
     case ProfilePage.routeName:
       return MaterialPageRoute(builder: (_) => const ProfilePage());
-    case ProductDetailPage.route:
-      return MaterialPageRoute(builder: (_) => const ProductDetailPage());
+    case ProductDetailPage.route: 
+      return MaterialPageRoute(builder: (_) =>  ProductDetailPage(productId: settings.arguments as String,));
     case LoginPage.route:
-      return MaterialPageRoute(builder: (_) => const LoginPage());
+      return MaterialPageRoute(builder: (_) =>  LoginPage());
     case ProfileCreatorPage.route:
-      return MaterialPageRoute(builder: (_) => const ProfileCreatorPage());
+      return MaterialPageRoute(builder: (_) =>  ProfileCreatorPage(creatorId : settings.arguments as String));
     case SearchPage.route:
       return MaterialPageRoute(builder: (_) => const SearchPage());
     // case MovieDetailPage.ROUTE_NAME:

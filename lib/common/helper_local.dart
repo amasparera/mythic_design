@@ -8,6 +8,13 @@ class HelperLocal {
   final String keyToken = "KEY_TOKEN";
   final String keyProfileImage = "KEY_PROFILE_IMAGE";
 
+  // reset
+  resetData()async{
+    final local = await SharedPreferences.getInstance();
+    local.clear();
+    
+  }
+
   // save
   saveFavorite(List<String> listIdFavorite) async {
     final local = await SharedPreferences.getInstance();
@@ -24,9 +31,9 @@ class HelperLocal {
     await local.setString(keyProfileImage, image);
   }
 
-  saveProfileId({required String image}) async {
+  saveProfileId({required String id}) async {
     final local = await SharedPreferences.getInstance();
-    await local.setString(keyProfileImage, image);
+    await local.setString(keyProfileId, id);
   }
 
   saveToken({required String token}) async {

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/domain/enities/user.dart';
@@ -69,7 +72,15 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  String generateRandomString(int len) {
+    var r = Random();
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    return List.generate(len, (index) => chars[r.nextInt(chars.length)]).join();
+  }
+
   ListView _bodyProfile(User user) {
+    
     return ListView(
       children: [
         Stack(
@@ -80,10 +91,13 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               height: 100,
               width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(user.backgroundImage))),
+              color: user.backgroundImage != "" ? null : Colors.grey,
+              decoration: user.backgroundImage != ""
+                  ? BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(user.backgroundImage)))
+                  : null,
             ),
             SizedBox(
               height: 200,
@@ -98,7 +112,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: CircleAvatar(
                       backgroundColor: Colors.grey,
                       radius: 50,
-                      backgroundImage: NetworkImage(user.image),
+                      backgroundImage:
+                          user.image != "" ? NetworkImage(user.image) : null,
+                      child: user.image != ""
+                          ? null
+                          : const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 60,
+                            ),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -115,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        user.id,
+                        user.id + generateRandomString(18),
                         style: const TextStyle(fontSize: 13, color: label),
                       ),
                       const SizedBox(width: 4),
@@ -137,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
         myCoupon(),
         Center(
             child: Text(
-          "Member since  ${user.creatAt}",
+          "Member since  ${DateFormat.y().format(DateTime.parse(user.creatAt))}",
           style: const TextStyle(color: label, fontSize: 13),
         )),
         const SizedBox(height: 12),
@@ -152,7 +174,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight)),
           child: MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<ProfileNothifier>().logOut(context);
+            },
             child: const Text(
               "Log Out",
               style: TextStyle(
@@ -249,10 +273,16 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
+         text != ""? Text(
             text,
             style: const TextStyle(
               color: label,
+              height: 1.3,
+            ),
+          ):const Text(
+            "input you bio detail",
+            style: TextStyle(fontStyle: FontStyle.italic,
+              color: label,fontSize: 12,
               height: 1.3,
             ),
           )

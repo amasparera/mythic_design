@@ -53,7 +53,8 @@ class CardHome extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushNamed(ProfileCreatorPage.route);
+                    Navigator.of(context).pushNamed(ProfileCreatorPage.route,
+                        arguments: product.creatorId);
                   },
                   child: CircleAvatar(
                     radius: 20,
@@ -66,12 +67,19 @@ class CardHome extends StatelessWidget {
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      product.creatorName,
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: body),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            ProfileCreatorPage.route,
+                            arguments: product.creatorId);
+                      },
+                      child: Text(
+                        product.creatorName,
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: body),
+                      ),
                     ),
                     const Text(
                       "creator",
