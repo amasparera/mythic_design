@@ -28,7 +28,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
     if (respone.statusCode == 200) {
       return List<ProductModel>.from(
-          (body["data"] as List<dynamic>).map((x) => ProductModel.fromjson(x,null)));
+          (body["data"] as List<dynamic>).map((x) => ProductModel.fromjson(x,null,apiUrl)));
     } else {
       throw ServerException(message: body["message"]);
     }
@@ -42,7 +42,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
     var body = jsonDecode(respone.body);
 
     if (respone.statusCode == 200 && body != null) {
-      return ProductModel.fromjson(body["data"],body["image"]);
+      return ProductModel.fromjson(body["data"],body["image"],apiUrl);
     } else {
       throw ServerException(message: body["message"]);
     }

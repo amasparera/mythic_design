@@ -1,4 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:mythic_design/common/requeststate.dart';
+import 'package:mythic_design/domain/enities/creator.dart';
 import 'package:mythic_design/presentation/provider/creator_nothifier.dart';
 import 'package:mythic_design/presentation/widget/bottol_app.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +26,9 @@ class ProfileCreatorPage extends StatefulWidget {
 class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
   @override
   void initState() {
+    Future.microtask(() => context.read<CreatorNothifier>()
+      ..init()
+      ..fechdata(widget.creatorId));
     super.initState();
   }
 
@@ -73,193 +81,209 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
           )
         ],
       ),
-      body: ListView(children: [
-        Stack(
-          children: [
-            Container(
-              height: 250,
-            ),
-            Container(
-              height: 125,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://images.unsplash.com/photo-1654518999181-98bc88eb7ad1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"))),
-            ),
-            SizedBox(
-              height: 250,
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 73),
-                  const CircleAvatar(
-                    radius: 52,
-                    backgroundColor: Colors.white,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 50,
-                      backgroundImage: NetworkImage(
-                          "https://images.unsplash.com/photo-1654468087397-814085c7328c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"),
+      body: Consumer<CreatorNothifier>(builder: (context, data, _) {
+        if (data.nowCreaotrState == RequestState.loaded) {
+          return _body(context, data.creator);
+        } else if (data.nowCreaotrState == RequestState.loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return Center(
+            child: Text(data.message),
+          );
+        }
+      }),
+    );
+  }
+
+  String generateRandomString(int len) {
+    var r = Random();
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    return List.generate(len, (index) => chars[r.nextInt(chars.length)]).join();
+  }
+
+  ListView _body(BuildContext context, Creator creator) {
+    return ListView(children: [
+      Stack(
+        children: [
+          Container(
+            height: 250,
+          ),
+          Container(
+            height: 125,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(creator.backgroundImage))),
+          ),
+          SizedBox(
+            height: 250,
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 73),
+                CircleAvatar(
+                  radius: 52,
+                  backgroundColor: Colors.white,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    radius: 50,
+                    backgroundImage: NetworkImage(creator.image),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  "${creator.nameFirst} ${creator.nameLast}",
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: titleActive),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      creator.creatorId +
+                          generateRandomString(18 - creator.creatorId.length),
+                      style: const TextStyle(fontSize: 13, color: label),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    "Gabriel Madu",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: titleActive),
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "phHodebnon&69Iob8Go0",
-                        style: TextStyle(fontSize: 13, color: label),
-                      ),
-                      SizedBox(width: 4),
-                      Icon(
-                        Icons.copy_rounded,
-                        size: 16,
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                    const SizedBox(width: 4),
+                    const Icon(
+                      Icons.copy_rounded,
+                      size: 16,
+                    ),
+                  ],
+                )
+              ],
             ),
+          ),
+        ],
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: defaultPading * 2),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "1",
+                  style: TextStyle(
+                      color: body, fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  "Collected",
+                  style: TextStyle(
+                      fontSize: 13, fontWeight: FontWeight.bold, color: label),
+                )
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  creator.totalFollow.toString(),
+                  style: const TextStyle(
+                      color: body, fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 2),
+                const Text(
+                  "Followes",
+                  style: TextStyle(
+                      fontSize: 13, fontWeight: FontWeight.bold, color: label),
+                )
+              ],
+            ),
+            Container(
+                padding: const EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                    gradient: gradientButton,
+                    borderRadius: BorderRadius.circular(6)),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: defaultPading * 1.2, vertical: coverPading),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.5)),
+                  child: Image.asset("asset/icons/Follow.png", width: 48),
+                ))
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: defaultPading * 2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "1",
-                    style: TextStyle(
-                        color: body, fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    "Collected",
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: label),
-                  )
-                ],
+      ),
+      const Padding(
+        padding: EdgeInsets.only(
+            top: defaultPading * 2, left: defaultPading, bottom: defaultPading),
+        child: Text(
+          "Bio Creator",
+          style: TextStyle(color: label, fontSize: 18),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: defaultPading),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Image.asset("asset/icons/google-maps 1.png", width: 16),
+            const SizedBox(width: 4),
+            Text(creator.address)
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(
+            top: defaultPading, left: defaultPading, right: defaultPading),
+        child: Text(
+          creator.bio,
+          style: const TextStyle(fontSize: 13, height: 1.4, color: body),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(defaultPading),
+        child: Text(
+          "Member since  ${DateFormat.y().format(DateTime.parse(creator.creatAt))}",
+          style: const TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: label),
+        ),
+      ),
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: defaultPading),
+        child: WrapSocialMedia(),
+      ),
+      const Padding(
+        padding: EdgeInsets.all(defaultPading),
+        child: Text(
+          "Collection",
+          style: TextStyle(
+              fontSize: 18, color: label, fontWeight: FontWeight.bold),
+        ),
+      ),
+      Wrap(
+        children: List.generate(listimage.length, (index) {
+          return GestureDetector(
+            onTap: () {},
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              height: MediaQuery.of(context).size.width / 2,
+              child: Image.network(
+                listimage[index],
+                fit: BoxFit.cover,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "2024",
-                    style: TextStyle(
-                        color: body, fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    "Followes",
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: label),
-                  )
-                ],
-              ),
-              Container(
-                  padding: const EdgeInsets.all(1),
-                  decoration: BoxDecoration(
-                      gradient: gradientButton,
-                      borderRadius: BorderRadius.circular(6)),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPading * 1.2, vertical: coverPading),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.5)),
-                    child: Image.asset("asset/icons/Follow.png", width: 48),
-                  ))
-            ],
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(
-              top: defaultPading * 2,
-              left: defaultPading,
-              bottom: defaultPading),
-          child: Text(
-            "Bio Creator",
-            style: TextStyle(color: label, fontSize: 18),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: defaultPading),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Image.asset("asset/icons/google-maps 1.png", width: 16),
-              const SizedBox(width: 4),
-              const Text("Jakarta, Indonesia.")
-            ],
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(
-              top: defaultPading, left: defaultPading, right: defaultPading),
-          child: Text(
-            "Trevor Jackson is a multi-disciplinary artist exploring analog + digital realms since 1988. Collaborators inc Apple, BMW, Comme Des Garçons, ICA, NTS, Sonos,  Stone Island, Tate Modern + Warp.",
-            style: TextStyle(fontSize: 13, height: 1.4, color: body),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.all(defaultPading),
-          child: Text(
-            "Member since 2021",
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold, color: label),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: defaultPading),
-          child: WrapSocialMedia(),
-        ),
-        const Padding(
-          padding: EdgeInsets.all(defaultPading),
-          child: Text(
-            "Collection",
-            style: TextStyle(
-                fontSize: 18, color: label, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Wrap(
-          children: List.generate(listimage.length, (index) {
-            return GestureDetector(
-              onTap: () {},
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width / 2,
-                height: MediaQuery.of(context).size.width / 2,
-                child: Image.network(
-                  listimage[index],
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          }),
-        ),
-        const SizedBox(height: defaultPading * 4),
-        const BottomApp(),
-      ]),
-    );
+            ),
+          );
+        }),
+      ),
+      const SizedBox(height: defaultPading * 4),
+      const BottomApp(),
+    ]);
   }
 }
 

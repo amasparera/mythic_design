@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mythic_design/common/api_url.dart';
 
 class ProductMediaImageModel extends Equatable {
   final int id;
@@ -12,12 +13,12 @@ class ProductMediaImageModel extends Equatable {
       required this.productId,
       required this.image});
 
-  factory ProductMediaImageModel.fromjson(Map<String, dynamic> map) {
+  factory ProductMediaImageModel.fromjson(Map<String, dynamic> map,ApiUrl api) {
     return ProductMediaImageModel(
         id: map["idImage"],
        
         productId: map["idProduct"],
-        image: map["imageUrl"]);
+        image: "${api.baseUrlImage}/${map["imageUrl"]}");
   }
 
   @override

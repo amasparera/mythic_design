@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mythic_design/common/api_url.dart';
 import 'package:mythic_design/domain/enities/product.dart';
 import 'package:mythic_design/domain/enities/product_media_image.dart';
 import 'product_media_image_model.dart';
@@ -32,26 +33,26 @@ class ProductModel extends Equatable {
     this.listMediaImage,
   });
 
-  factory ProductModel.fromjson(Map<String, dynamic> map, image) {
+  factory ProductModel.fromjson(Map<String, dynamic> map, image,ApiUrl api) {
     return ProductModel(
         productId: map["productId"],
         productName: map["productTilte"],
         productImage: map["productCover"] != ""
-            ? "http://10.0.2.2:8000/public/${map["productCover"]}"
+            ? "${api.baseUrlImage}/${map["productCover"]}"
             : "",
         productPrice: map["productPrice"],
         productCreate: map["creatAt"],
         creatorId: map["creatorId"],
         creatorName: map["creatorName"],
         creatorImage: map["creatorImage"] != ""
-            ? "http://10.0.2.2:8000/public/${map["creatorImage"]}"
+            ? "${api.baseUrlImage}/${map["creatorImage"]}"
             : "",
         description: map["description"] ?? "",
         totalBuy: map["productBuy"],
         totalFavorite: map["productLove"],
         listMediaImage: image != null
             ? (image as List<dynamic>)
-                .map((e) => ProductMediaImageModel.fromjson(e))
+                .map((e) => ProductMediaImageModel.fromjson(e,api))
                 .toList()
             : null);
   }

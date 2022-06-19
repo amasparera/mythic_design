@@ -137,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        user.id + generateRandomString(18),
+                        user.id + generateRandomString(18-user.id.length),
                         style: const TextStyle(fontSize: 13, color: label),
                       ),
                       const SizedBox(width: 4),

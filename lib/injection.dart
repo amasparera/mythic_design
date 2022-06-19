@@ -1,14 +1,18 @@
 import 'package:get_it/get_it.dart';
 import 'package:mythic_design/common/api_url.dart';
 import 'package:mythic_design/common/helper_local.dart';
+import 'package:mythic_design/data/datasources/creator_remote.dart';
 import 'package:mythic_design/data/datasources/product_remote_db.dart';
 import 'package:mythic_design/data/datasources/auth_remote.dart';
 import 'package:mythic_design/data/datasources/user_remote_db.dart';
 import 'package:mythic_design/data/repository_impl/auth_impl.dart';
+import 'package:mythic_design/data/repository_impl/creator_impl.dart';
 import 'package:mythic_design/data/repository_impl/user_impl.dart';
 import 'package:mythic_design/domain/repository/auth_repository.dart';
+import 'package:mythic_design/domain/repository/creator_repository.dart';
 import 'package:mythic_design/domain/repository/product_repository.dart';
 import 'package:mythic_design/domain/repository/user_repository.dart';
+import 'package:mythic_design/domain/user_case/get_creator.dart';
 import 'package:mythic_design/domain/user_case/get_product_detail.dart';
 import 'package:mythic_design/domain/user_case/get_products.dart';
 import 'package:mythic_design/domain/user_case/get_user.dart';
@@ -29,12 +33,14 @@ void init() async {
   // provider
   locator.registerFactory(
       () => HomeNotifier(getProducts: locator(), helperLocal: locator()));
-  locator.registerFactory(() => ProfileNothifier( locator(),getUser: locator()));
+  locator
+      .registerFactory(() => ProfileNothifier(locator(), getUser: locator()));
   locator.registerFactory(
       () => ProductDetailNothifier(getProductDetail: locator()));
-  locator.registerFactory(() => LoginNothifier(locator(),locator(),locator()));
+  locator
+      .registerFactory(() => LoginNothifier(locator(), locator(), locator()));
   locator.registerFactory(() => SearchNothifier());
-  locator.registerFactory(() => CreatorNothifier(locator()));
+  locator.registerFactory(() => CreatorNothifier(locator(), locator()));
 
   // use case
   locator
@@ -44,6 +50,7 @@ void init() async {
   locator.registerLazySingleton(() => GetUser(userRepository: locator()));
   locator.registerLazySingleton(() => LoginAuth(locator()));
   locator.registerLazySingleton(() => SingUpAuth(locator()));
+  locator.registerLazySingleton(() => GetCreator(locator()));
 
   // repository
   locator.registerLazySingleton<ProductRepository>(
@@ -52,6 +59,8 @@ void init() async {
       () => UserRepositoryImpl(userRemoteDataSource: locator()));
   locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(locator()));
+  locator.registerLazySingleton<CreatorRepository>(
+      () => CreatorRepositoryImpl(locator()));
 
   // data source
   locator.registerLazySingleton<ProductRemoteDataSource>(
@@ -61,6 +70,8 @@ void init() async {
   locator.registerLazySingleton<AuthRemoteRepository>(() =>
       AuthRemoteRepositoryImpl(
           client: locator(), apiUrl: locator(), local: locator()));
+  locator.registerLazySingleton<CreatorRemoteRepository>(
+      () => CreatorRemoteRepositoryImpl(locator(), locator()));
 
   // helper
   locator.registerLazySingleton(() => HelperLocal());
