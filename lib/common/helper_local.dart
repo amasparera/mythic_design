@@ -4,6 +4,7 @@ class HelperLocal {
   // KEY
   final String keyFavorite = "KEY_FAVORITE";
   final String keyLogin = "KEY_LOGIN";
+  final String keyInstal = "KEY_INSTAL";
   final String keyProfileId = "KEY_PROFILE_ID";
   final String keyToken = "KEY_TOKEN";
   final String keyProfileImage = "KEY_PROFILE_IMAGE";
@@ -24,6 +25,11 @@ class HelperLocal {
   saveLogin({required bool login}) async {
     final local = await SharedPreferences.getInstance();
     await local.setBool(keyLogin, login);
+  }
+
+  saveInstal({required bool instal}) async {
+    final local = await SharedPreferences.getInstance();
+    await local.setBool(keyInstal, instal);
   }
 
   saveProfileImage({required String image}) async {
@@ -50,6 +56,11 @@ class HelperLocal {
   Future<bool> loadLogin() async {
     final local = await SharedPreferences.getInstance();
     return local.getBool(keyLogin) ?? false;
+  }
+
+  Future<bool> loadInstal() async {
+    final local = await SharedPreferences.getInstance();
+    return local.getBool(keyInstal) ?? false;
   }
 
   Future<String?> loadProfileImage() async {

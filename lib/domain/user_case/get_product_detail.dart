@@ -8,7 +8,7 @@ class GetProductDetail {
 
   GetProductDetail({required this.productRepository});
 
-  Future<Either<Failure,Product>> execute({required String productId})async{
-    return await productRepository.getProductDetail(productId: productId);
+  Future<Either<Failure,Product>> execute({required String productId}){
+    return  productRepository.getProductDetail(productId: productId);
   }
 }

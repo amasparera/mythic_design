@@ -1,5 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/size.dart';
+import 'package:mythic_design/domain/enities/notifikasi.dart';
+import 'package:mythic_design/presentation/provider/nitifikasi_nothifier.dart';
+import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../common/thema_app.dart';
@@ -12,7 +16,7 @@ class NotifikasiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _floatingBottom(),
+      floatingActionButton: _floatingBottom(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
         leading: IconButton(
@@ -27,60 +31,64 @@ class NotifikasiPage extends StatelessWidget {
         ),
         title: const Text("Notification"),
       ),
-      body: ListView.builder(
-          // padding: const EdgeInsets.all(defaultPading),
-          itemCount: 5,
-          itemBuilder: (context, index) => MaterialButton(
-                padding: EdgeInsets.all(coverPading),
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: coverPading),
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                          image: const DecorationImage(
-                              image: NetworkImage(
-                                  "https://images.unsplash.com/photo-1654613044785-9c5e2d75dad6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(4)),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Daun Merah",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 4),
-                        const Text(
-                          "commplete your payment",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 4,
-                          style: TextStyle(color: placeholder, fontSize: 12),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          timeago.format(DateTime.now()
-                              .subtract(const Duration(minutes: 15))),
-                          style: const TextStyle(
-                              color: placeholder, fontSize: 12),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              )),
+      body: Consumer<NotifikasiNothifier>(builder: (context, data, _) {
+        return ListView.builder(
+            // padding: const EdgeInsets.all(defaultPading),
+            itemCount: data.listNothif.length,
+            itemBuilder: (context, index) => _card(data.listNothif[index]));
+      }),
     );
   }
 
-  Container _floatingBottom() {
+  MaterialButton _card(NothifApp data) {
+    return MaterialButton(
+      padding: const EdgeInsets.all(coverPading),
+      onPressed: () {},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(right: coverPading),
+            height: 60,
+            width: 60,
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
+            child: Image.asset("asset/logo/Group.png"),
+          ),
+          Flexible(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  data.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  data.body,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 6,
+                  style: const TextStyle(color: placeholder, fontSize: 12),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  timeago.format(
+                      data.time!),
+                  style: const TextStyle(color: placeholder, fontSize: 12),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _floatingBottom(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 45,
@@ -94,7 +102,9 @@ class NotifikasiPage extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight)),
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          context.read<NotifikasiNothifier>().clearnothif();
+        },
         child: const Text(
           "Clear All",
           style: TextStyle(

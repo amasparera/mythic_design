@@ -38,14 +38,14 @@ class ProductModel extends Equatable {
         productId: map["productId"],
         productName: map["productTilte"],
         productImage: map["productCover"] != ""
-            ? "${api.baseUrlImage}/${map["productCover"]}"
+            ? "${api.baseUrlImage}${map["productCover"]}"
             : "",
         productPrice: map["productPrice"],
         productCreate: map["creatAt"],
         creatorId: map["creatorId"],
         creatorName: map["creatorName"],
         creatorImage: map["creatorImage"] != ""
-            ? "${api.baseUrlImage}/${map["creatorImage"]}"
+            ? "${api.baseUrlImage}${map["creatorImage"]}"
             : "",
         description: map["description"] ?? "",
         totalBuy: map["productBuy"],

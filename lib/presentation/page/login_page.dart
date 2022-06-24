@@ -5,12 +5,11 @@ import 'package:provider/provider.dart';
 
 import '../../common/thema_app.dart';
 
+// ignore: must_be_immutable
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
   static const String route = "/login";
-
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +31,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  final _formKey = GlobalKey<FormState>();
   String name = "";
   String email = "";
   String password = "";

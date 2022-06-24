@@ -8,7 +8,7 @@ class GetCreator {
 
   GetCreator(this.creatorRepository);
 
-  Future<Either<Failure,Creator>> execute(String id)async{
-    return await creatorRepository.getCreator(id);
+  Future<Either<Failure,Creator>> execute(String id){
+    return  creatorRepository.getCreator(id);
   }
 }

@@ -8,8 +8,8 @@ class SingUpAuth {
 
   SingUpAuth(this.authRepository);
 
-  Future<Either<Failure, User>> execute(String name, String email, String password) async {
-    return await authRepository.singup(
+  Future<Either<Failure, User>> execute(String name, String email, String password)  {
+    return  authRepository.singup(
         name: name, email: email, password: password);
   }
 }

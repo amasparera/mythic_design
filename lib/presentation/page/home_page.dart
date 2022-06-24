@@ -5,9 +5,10 @@ import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/presentation/page/notifikasi_page.dart';
 import 'package:mythic_design/presentation/page/product_detail_page.dart';
 import 'package:mythic_design/presentation/page/wishlist_page.dart';
+import 'package:mythic_design/presentation/provider/nitifikasi_nothifier.dart';
+import 'package:mythic_design/presentation/provider/wishlist_nothifier.dart';
 import 'package:provider/provider.dart';
 
-import '../../common/helper_local.dart';
 import '../provider/home_nothifier.dart';
 import '../widget/card_home.dart';
 
@@ -23,20 +24,26 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    Future.microtask(() => context.read<HomeNotifier>()
-      ..getlogin()
-      ..getListFavorite()
-      ..fechProduct());
+    Future.microtask(() {
+      context.read<HomeNotifier>()
+        ..init(context)
+        ..getlogin()
+        ..getListFavorite()
+        ..fechProduct()
+        ..shownothif(context);
+      context.read<WishlistNothifier>().getWishlist();
+    });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        HelperLocal().saveLogin(login: false);
-        HelperLocal().resetData();
-      }),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   context.read<HomeNotifier>().shownothif(context);
+      // }),
       body: NestedScrollView(
           floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -56,18 +63,50 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           Navigator.pushNamed(context, NotifikasiPage.route);
                         },
-                        icon: Image.asset(
-                          "asset/icons/Notification.png",
-                          width: 24,
+                        icon: Stack(
+                          children: [
+                            Image.asset(
+                              "asset/icons/Notification.png",
+                              width: 24,
+                            ),
+                            Positioned(
+                                right: 0,
+                                child: Consumer<NotifikasiNothifier>(
+                                    builder: (context, data, _) {
+                                  if (data.listNothif.isNotEmpty) {
+                                    return const CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: 5,
+                                    );
+                                  }
+                                  return const SizedBox();
+                                }))
+                          ],
                         )),
                     IconButton(
                         splashRadius: 20,
                         onPressed: () {
                           Navigator.pushNamed(context, WishlistPage.route);
                         },
-                        icon: Image.asset(
-                          "asset/icons/Cart.png",
-                          width: 24,
+                        icon: Stack(
+                          children: [
+                            Image.asset(
+                              "asset/icons/Cart.png",
+                              width: 24,
+                            ),
+                            Positioned(
+                                right: 0,
+                                child: Consumer<WishlistNothifier>(
+                                    builder: (context, data, _) {
+                                  if (data.wishlistInt.isNotEmpty) {
+                                    return const CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: 5,
+                                    );
+                                  }
+                                  return const SizedBox();
+                                }))
+                          ],
                         )),
                     IconButton(
                         splashRadius: 20,

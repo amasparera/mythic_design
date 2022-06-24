@@ -10,6 +10,10 @@ import 'package:mythic_design/presentation/widget/bottol_app.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/size.dart';
+import '../provider/nitifikasi_nothifier.dart';
+import '../provider/wishlist_nothifier.dart';
+import 'notifikasi_page.dart';
+import 'wishlist_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -41,17 +45,53 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           IconButton(
               splashRadius: 20,
-              onPressed: () {},
-              icon: Image.asset(
-                "asset/icons/Notification.png",
-                width: 24,
+              onPressed: () {
+                Navigator.pushNamed(context, NotifikasiPage.route);
+              },
+              icon: Stack(
+                children: [
+                  Image.asset(
+                    "asset/icons/Notification.png",
+                    width: 24,
+                  ),
+                  Positioned(
+                      right: 0,
+                      child: Consumer<NotifikasiNothifier>(
+                          builder: (context, data, _) {
+                        if (data.listNothif.isNotEmpty) {
+                          return const CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 5,
+                          );
+                        }
+                        return const SizedBox();
+                      }))
+                ],
               )),
           IconButton(
               splashRadius: 20,
-              onPressed: () {},
-              icon: Image.asset(
-                "asset/icons/Cart.png",
-                width: 24,
+              onPressed: () {
+                Navigator.pushNamed(context, WishlistPage.route);
+              },
+              icon: Stack(
+                children: [
+                  Image.asset(
+                    "asset/icons/Cart.png",
+                    width: 24,
+                  ),
+                  Positioned(
+                      right: 0,
+                      child: Consumer<WishlistNothifier>(
+                          builder: (context, data, _) {
+                        if (data.wishlistInt.isNotEmpty) {
+                          return const CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 5,
+                          );
+                        }
+                        return const SizedBox();
+                      }))
+                ],
               )),
           const SizedBox(
             width: defaultPading / 2,
@@ -80,7 +120,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   ListView _bodyProfile(User user) {
-    
     return ListView(
       children: [
         Stack(
@@ -137,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        user.id + generateRandomString(18-user.id.length),
+                        user.id + generateRandomString(18 - user.id.length),
                         style: const TextStyle(fontSize: 13, color: label),
                       ),
                       const SizedBox(width: 4),
@@ -273,19 +312,23 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           const SizedBox(height: 8),
-         text != ""? Text(
-            text,
-            style: const TextStyle(
-              color: label,
-              height: 1.3,
-            ),
-          ):const Text(
-            "input you bio detail",
-            style: TextStyle(fontStyle: FontStyle.italic,
-              color: label,fontSize: 12,
-              height: 1.3,
-            ),
-          )
+          text != ""
+              ? Text(
+                  text,
+                  style: const TextStyle(
+                    color: label,
+                    height: 1.3,
+                  ),
+                )
+              : const Text(
+                  "input you bio detail",
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: label,
+                    fontSize: 12,
+                    height: 1.3,
+                  ),
+                )
         ],
       ),
     );

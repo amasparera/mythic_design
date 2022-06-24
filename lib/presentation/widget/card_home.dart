@@ -20,6 +20,7 @@ class CardHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isVaforite = statusFavorite;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -87,15 +88,22 @@ class CardHome extends StatelessWidget {
                     )
                   ],
                 )),
-                GestureDetector(
-                    child: Icon(
-                  Icons.favorite,
-                  color: statusFavorite ? Colors.red : Colors.grey,
-                ))
+                StatefulBuilder(
+                  builder: (context, setState) => GestureDetector(
+                      onTap: () => setState(() => isVaforite = !isVaforite),
+                      child: Icon(
+                        Icons.favorite,
+                        color: isVaforite ? Colors.red : Colors.grey,
+                      )),
+                ),
+                const SizedBox(
+                  width: coverPading,
+                )
               ],
             ),
             BuyCurrent(
               price: product.productPrice,
+              product: product,
             )
           ],
         ),

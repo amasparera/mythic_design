@@ -10,7 +10,11 @@ import 'package:provider/provider.dart';
 
 import '../../common/size.dart';
 import '../../common/thema_app.dart';
+import '../provider/nitifikasi_nothifier.dart';
+import '../provider/wishlist_nothifier.dart';
 import '../widget/wrap_sosial_media.dart';
+import 'notifikasi_page.dart';
+import 'wishlist_page.dart';
 
 class ProfileCreatorPage extends StatefulWidget {
   final String creatorId;
@@ -28,7 +32,8 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
   void initState() {
     Future.microtask(() => context.read<CreatorNothifier>()
       ..init()
-      ..fechdata(widget.creatorId));
+      ..fechdata(widget.creatorId)
+      ..fechdataImage(widget.creatorId));
     super.initState();
   }
 
@@ -44,20 +49,56 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
           width: 150,
         ),
         actions: [
+         IconButton(
+                        splashRadius: 20,
+                        onPressed: () {
+                          Navigator.pushNamed(context, NotifikasiPage.route);
+                        },
+                        icon: Stack(
+                          children: [
+                            Image.asset(
+                              "asset/icons/Notification.png",
+                              width: 24,
+                            ),
+                            Positioned(
+                                right: 0,
+                                child: Consumer<NotifikasiNothifier>(
+                                    builder: (context, data, _) {
+                                  if (data.listNothif.isNotEmpty) {
+                                    return const CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: 5,
+                                    );
+                                  }
+                                  return const SizedBox();
+                                }))
+                          ],
+                        )),
           IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: Image.asset(
-                "asset/icons/Notification.png",
-                width: 24,
-              )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: Image.asset(
-                "asset/icons/Cart.png",
-                width: 24,
-              )),
+                        splashRadius: 20,
+                        onPressed: () {
+                          Navigator.pushNamed(context, WishlistPage.route);
+                        },
+                        icon: Stack(
+                          children: [
+                            Image.asset(
+                              "asset/icons/Cart.png",
+                              width: 24,
+                            ),
+                            Positioned(
+                                right: 0,
+                                child: Consumer<WishlistNothifier>(
+                                    builder: (context, data, _) {
+                                  if (data.wishlistInt.isNotEmpty) {
+                                    return const CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: 5,
+                                    );
+                                  }
+                                  return const SizedBox();
+                                }))
+                          ],
+                        )),
           Consumer<CreatorNothifier>(
             builder: (context, data, _) => IconButton(
                 splashRadius: 20,
@@ -173,14 +214,14 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  "1",
-                  style: TextStyle(
+                  context.read<CreatorNothifier>().image.length.toString(),
+                  style: const TextStyle(
                       color: body, fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 2),
-                Text(
+                const SizedBox(height: 2),
+                const Text(
                   "Collected",
                   style: TextStyle(
                       fontSize: 13, fontWeight: FontWeight.bold, color: label),
@@ -203,19 +244,37 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
                 )
               ],
             ),
-            Container(
-                padding: const EdgeInsets.all(1),
-                decoration: BoxDecoration(
-                    gradient: gradientButton,
-                    borderRadius: BorderRadius.circular(6)),
+            Consumer<CreatorNothifier>(builder: (context, data, _) {
+              return GestureDetector(
+                onTap: () {
+                  data.followUnfollow(int.parse(creator.creatorId));
+                },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPading * 1.2, vertical: coverPading),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.5)),
-                  child: Image.asset("asset/icons/Follow.png", width: 48),
-                ))
+                    padding: const EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                        gradient: gradientButton,
+                        borderRadius: BorderRadius.circular(6)),
+                    child: data.follow.contains(int.parse(creator.creatorId))
+                        ? Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPading * 1.2,
+                                vertical: coverPading),
+                            child: const Text("Unfollow",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)))
+                        : Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPading * 1.2,
+                                vertical: coverPading),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5.5)),
+                            child: Image.asset("asset/icons/Follow.png",
+                                width: 48),
+                          )),
+              );
+            })
           ],
         ),
       ),
@@ -266,36 +325,40 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
               fontSize: 18, color: label, fontWeight: FontWeight.bold),
         ),
       ),
-      Wrap(
-        children: List.generate(listimage.length, (index) {
-          return GestureDetector(
-            onTap: () {},
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              height: MediaQuery.of(context).size.width / 2,
-              child: Image.network(
-                listimage[index],
-                fit: BoxFit.cover,
-              ),
-            ),
+      Consumer<CreatorNothifier>(builder: (context, data, _) {
+        if (data.nowCreaotrStateImage == RequestState.loading) {
+          return Wrap(
+              children: List.generate(4, (index) {
+            return GestureDetector(
+                onTap: () {},
+                child: Container(
+                  color: Colors.grey,
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.width / 2,
+                ));
+          }));
+        } else if (data.nowCreaotrStateImage == RequestState.loaded) {
+          return Wrap(
+            children: List.generate(data.image.length, (index) {
+              return GestureDetector(
+                onTap: () {},
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.width / 2,
+                  child: Image.network(
+                    data.image[index].image,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            }),
           );
-        }),
-      ),
+        } else {
+          return Center(child: Text(data.message));
+        }
+      }),
       const SizedBox(height: defaultPading * 4),
       const BottomApp(),
     ]);
   }
 }
-
-var listimage = <String>[
-  "https://images.unsplash.com/photo-1644982654072-0b42e6636821?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://images.unsplash.com/photo-1649859398021-afbfe80e83b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://images.unsplash.com/photo-1649859394614-dc4f7290b7f2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://images.unsplash.com/photo-1649859395314-bdea587e4524?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://images.unsplash.com/photo-1649859398731-d3c4ebca53fc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://images.unsplash.com/photo-1649859394657-8762d8a4758a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=952&q=80",
-  "https://images.unsplash.com/photo-1649859397840-e90c65756084?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1051&q=80",
-  "https://images.unsplash.com/photo-1649859397268-251f729c4e09?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://images.unsplash.com/photo-1649859396073-13ff3244ec1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://images.unsplash.com/photo-1644982653424-1bfed7f972a2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1089&q=80"
-];

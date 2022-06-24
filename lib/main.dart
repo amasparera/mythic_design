@@ -9,7 +9,9 @@ import 'presentation/provider/creator_nothifier.dart';
 import 'presentation/provider/detail_product_nothifier.dart';
 import 'presentation/provider/home_nothifier.dart';
 import 'presentation/provider/login_nothifier.dart';
+import 'presentation/provider/nitifikasi_nothifier.dart';
 import 'presentation/provider/profile_nothifier.dart';
+import 'presentation/provider/wishlist_nothifier.dart';
 import 'route_name.dart';
 
 void main(List<String> args) {
@@ -27,8 +29,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.locator<HomeNotifier>()),
         ChangeNotifierProvider(create: (_) => di.locator<ProfileNothifier>()),
         ChangeNotifierProvider(create: (_) => di.locator<LoginNothifier>()),
-        ChangeNotifierProvider(create: (_) => di.locator<ProductDetailNothifier>()),
+        ChangeNotifierProvider(
+            create: (_) => di.locator<ProductDetailNothifier>()),
         ChangeNotifierProvider(create: (_) => di.locator<CreatorNothifier>()),
+        ChangeNotifierProvider(create: (_) => di.locator<WishlistNothifier>()),
+        ChangeNotifierProvider(
+            create: (_) => di.locator<NotifikasiNothifier>()),
       ],
       child: MaterialApp(
           theme: thmeaSiang(),
