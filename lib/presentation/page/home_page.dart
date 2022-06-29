@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mythic_design/common/helper_local.dart';
+import 'package:mythic_design/common/image_stroge.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/presentation/page/notifikasi_page.dart';
-import 'package:mythic_design/presentation/page/product_detail_page.dart';
 import 'package:mythic_design/presentation/page/wishlist_page.dart';
 import 'package:mythic_design/presentation/provider/nitifikasi_nothifier.dart';
 import 'package:mythic_design/presentation/provider/wishlist_nothifier.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/home_nothifier.dart';
 import '../widget/card_home.dart';
+import 'product_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,13 +39,10 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  final ImageStorage imageStorage = ImageStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   context.read<HomeNotifier>().shownothif(context);
-      // }),
       body: NestedScrollView(
           floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -119,7 +118,8 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: Colors.grey,
                             backgroundImage: data.profilleImage != null ||
                                     data.profilleImage == ""
-                                ? NetworkImage(data.profilleImage!)
+                                ? NetworkImage(
+                                    "https://mythicserver.herokuapp.com/public/${data.profilleImage!}")
                                 : null,
                             radius: 15,
                             child: data.profilleImage == null ||
@@ -150,6 +150,8 @@ class _HomePageState extends State<HomePage> {
                     if (index == 0) {
                       return coverHomeSearch(context);
                     }
+                    // return Text("");
+
                     return CardHome(
                       onTap: () => Navigator.pushNamed(
                           context, ProductDetailPage.route,

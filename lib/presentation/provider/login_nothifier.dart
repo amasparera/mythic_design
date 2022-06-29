@@ -55,6 +55,7 @@ class LoginNothifier extends ChangeNotifier {
   }
 
   void login(BuildContext context, String email, String password) async {
+    print(email + password);
     _valid = true;
     notifyListeners();
     final result = await loginAuth.execute(email: email, password: password);

@@ -49,56 +49,56 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
           width: 150,
         ),
         actions: [
-         IconButton(
-                        splashRadius: 20,
-                        onPressed: () {
-                          Navigator.pushNamed(context, NotifikasiPage.route);
-                        },
-                        icon: Stack(
-                          children: [
-                            Image.asset(
-                              "asset/icons/Notification.png",
-                              width: 24,
-                            ),
-                            Positioned(
-                                right: 0,
-                                child: Consumer<NotifikasiNothifier>(
-                                    builder: (context, data, _) {
-                                  if (data.listNothif.isNotEmpty) {
-                                    return const CircleAvatar(
-                                      backgroundColor: Colors.red,
-                                      radius: 5,
-                                    );
-                                  }
-                                  return const SizedBox();
-                                }))
-                          ],
-                        )),
           IconButton(
-                        splashRadius: 20,
-                        onPressed: () {
-                          Navigator.pushNamed(context, WishlistPage.route);
-                        },
-                        icon: Stack(
-                          children: [
-                            Image.asset(
-                              "asset/icons/Cart.png",
-                              width: 24,
-                            ),
-                            Positioned(
-                                right: 0,
-                                child: Consumer<WishlistNothifier>(
-                                    builder: (context, data, _) {
-                                  if (data.wishlistInt.isNotEmpty) {
-                                    return const CircleAvatar(
-                                      backgroundColor: Colors.red,
-                                      radius: 5,
-                                    );
-                                  }
-                                  return const SizedBox();
-                                }))
-                          ],
-                        )),
+              splashRadius: 20,
+              onPressed: () {
+                Navigator.pushNamed(context, NotifikasiPage.route);
+              },
+              icon: Stack(
+                children: [
+                  Image.asset(
+                    "asset/icons/Notification.png",
+                    width: 24,
+                  ),
+                  Positioned(
+                      right: 0,
+                      child: Consumer<NotifikasiNothifier>(
+                          builder: (context, data, _) {
+                        if (data.listNothif.isNotEmpty) {
+                          return const CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 5,
+                          );
+                        }
+                        return const SizedBox();
+                      }))
+                ],
+              )),
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {
+                Navigator.pushNamed(context, WishlistPage.route);
+              },
+              icon: Stack(
+                children: [
+                  Image.asset(
+                    "asset/icons/Cart.png",
+                    width: 24,
+                  ),
+                  Positioned(
+                      right: 0,
+                      child: Consumer<WishlistNothifier>(
+                          builder: (context, data, _) {
+                        if (data.wishlistInt.isNotEmpty) {
+                          return const CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 5,
+                          );
+                        }
+                        return const SizedBox();
+                      }))
+                ],
+              )),
           Consumer<CreatorNothifier>(
             builder: (context, data, _) => IconButton(
                 splashRadius: 20,
@@ -106,7 +106,7 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
                 icon: CircleAvatar(
                   backgroundColor: Colors.grey,
                   backgroundImage: data.imageProfile != ""
-                      ? NetworkImage(data.imageProfile)
+                      ? NetworkImage("https://mythicserver.herokuapp.com/public/${data.imageProfile}")
                       : null,
                   radius: 15,
                   child: data.imageProfile != ""
@@ -158,7 +158,7 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(creator.backgroundImage))),
+                    image: NetworkImage("https://mythicserver.herokuapp.com/public/${creator.backgroundImage}"))),
           ),
           SizedBox(
             height: 250,
@@ -174,7 +174,7 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
                   child: CircleAvatar(
                     backgroundColor: Colors.grey,
                     radius: 50,
-                    backgroundImage: NetworkImage(creator.image),
+                    backgroundImage: NetworkImage("https://mythicserver.herokuapp.com/public/${creator.image}"),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -346,7 +346,7 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
                   width: MediaQuery.of(context).size.width / 2,
                   height: MediaQuery.of(context).size.width / 2,
                   child: Image.network(
-                    data.image[index].image,
+                   "https://mythicserver.herokuapp.com/public/${data.image[index].image}",
                     fit: BoxFit.cover,
                   ),
                 ),

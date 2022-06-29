@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "550920407463",
+    "project_id": "mythic-server",
+    "storage_bucket": "mythic-server.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550920407463:android:13519e14ac9ad756e90e82",
+        "android_client_info": {
+          "package_name": "com.example.mythic_design"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550920407463-qt56oqs9fs0vdbfpul1otndg6rvv42ct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjy4GphFK16FMobzjyst7D3PUwkTogtr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550920407463-qt56oqs9fs0vdbfpul1otndg6rvv42ct.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -135,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ? BoxDecoration(
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(user.backgroundImage)))
+                          image: NetworkImage("https://mythicserver.herokuapp.com/public/${user.backgroundImage}")))
                   : null,
             ),
             SizedBox(
@@ -152,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       backgroundColor: Colors.grey,
                       radius: 50,
                       backgroundImage:
-                          user.image != "" ? NetworkImage(user.image) : null,
+                          user.image != "" ? NetworkImage("https://mythicserver.herokuapp.com/public/${user.image}") : null,
                       child: user.image != ""
                           ? null
                           : const Icon(

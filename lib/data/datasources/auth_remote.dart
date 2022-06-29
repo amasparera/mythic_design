@@ -23,6 +23,7 @@ class AuthRemoteRepositoryImpl implements AuthRemoteRepository {
 
   @override
   Future<UserModel?> logIn({required Map<String, dynamic> map}) async {
+    log(map.toString());
     Uri api = Uri.parse(apiUrl.baseUrl + apiUrl.login);
     var json = await client.post(api, body: map);
     var body = jsonDecode(json.body);
@@ -31,7 +32,7 @@ class AuthRemoteRepositoryImpl implements AuthRemoteRepository {
       local.saveLogin(login: true);
       local.saveToken(token: body["accestoken"]);
       local.saveProfileId(id: body["data"]["id"].toString());
-      local.saveProfileImage(image:body["data"]["image"] != "" ? "${apiUrl.baseUrl}/public/${ body["data"]["image"]}" : "");
+      local.saveProfileImage(image:body["data"]["image"] );
       return UserModel.fromjson(body["data"]);
     } else {
       throw ServerException(message: body["message"]);
@@ -49,7 +50,7 @@ class AuthRemoteRepositoryImpl implements AuthRemoteRepository {
       local.saveLogin(login: true);
       local.saveToken(token: body["accestoken"]);
       local.saveProfileId(id: body["data"]["id"].toString());
-      local.saveProfileImage(image:body["data"]["image"] != "" ? "${apiUrl.baseUrl}/public/${ body["data"]["image"]}" : "");
+      local.saveProfileImage(image:body["data"]["image"] );
       return UserModel.fromjson(body["data"]);
     } else {
       throw ServerException(message: body["message"]);

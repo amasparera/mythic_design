@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:mythic_design/common/api_url.dart';
 import 'package:mythic_design/domain/enities/user.dart';
 
 class UserModel extends Equatable {
@@ -23,12 +22,10 @@ class UserModel extends Equatable {
       required this.creatAt});
 
   factory UserModel.fromjson(Map<String, dynamic> map) {
-    final ApiUrl apiUrl = ApiUrl();
+    
     return UserModel(
-        image: map["image"] != "" ? "${apiUrl.baseUrlImage}/${map["image"]}" : "",
-        backgroundImage: map["backgroundImage"] != ""
-            ? "${apiUrl.baseUrlImage}/${map["backgroundImage"]}"
-            : "",
+        image: map["image"] ,
+        backgroundImage: map["backgroundImage"],
         id: map["id"],
         nameFist: map["name"],
         nameLast: map["nameLast"] ?? "",

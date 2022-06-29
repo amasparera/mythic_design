@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/size.dart';
 import 'package:mythic_design/domain/enities/notifikasi.dart';
@@ -76,8 +75,7 @@ class NotifikasiPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  timeago.format(
-                      data.time!),
+                  timeago.format(data.time!),
                   style: const TextStyle(color: placeholder, fontSize: 12),
                 )
               ],

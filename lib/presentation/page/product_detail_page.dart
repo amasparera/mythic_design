@@ -78,7 +78,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   product.listMediaImage!.length,
                   (index) => FadeIn(
                         delay: Duration(milliseconds: 300 * index),
-                        child: Image.network(product.listMediaImage![index].image,
+                        child: Image.network( "https://mythicserver.herokuapp.com/public/${product.listMediaImage![index].image}",
                             fit: BoxFit.fitWidth),
                       ))),
           FutureBuilder(
@@ -195,7 +195,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       children: [
                         CircleAvatar(
                           backgroundColor: Colors.grey,
-                          backgroundImage: NetworkImage(product.creatorImage),
+                          backgroundImage: NetworkImage("https://mythicserver.herokuapp.com/public/${product.creatorImage}"),
                           radius: 16,
                         ),
                         Padding(

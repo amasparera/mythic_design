@@ -42,7 +42,7 @@ class CardHome extends StatelessWidget {
                   borderRadius: BorderRadius.circular(coverPading * 1.5),
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(product.productImage))),
+                      image: NetworkImage("https://mythicserver.herokuapp.com/public/${product.productImage}"))),
             ),
             Text(product.productName,
                 style: const TextStyle(
@@ -60,7 +60,7 @@ class CardHome extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 20,
                     backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage(product.creatorImage),
+                    backgroundImage: NetworkImage("https://mythicserver.herokuapp.com/public/${product.creatorImage}"),
                   ),
                 ),
                 const SizedBox(width: coverPading / 2),

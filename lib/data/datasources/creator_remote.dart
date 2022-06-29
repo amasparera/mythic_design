@@ -23,7 +23,7 @@ class CreatorRemoteRepositoryImpl implements CreatorRemoteRepository {
     var body = jsonDecode(result.body);
 
     if (result.statusCode == 200) {
-      return CreatorModel.fromjson(body["data"], apiUrl);
+      return CreatorModel.fromjson(body["data"]);
     } else {
       throw ServerException(message: body["message"]);
     }
@@ -37,7 +37,7 @@ class CreatorRemoteRepositoryImpl implements CreatorRemoteRepository {
 
     if (result.statusCode == 200) {
       return List<ProductMediaImageModel>.from((body["data"] as List<dynamic>)
-          .map((e) => ProductMediaImageModel.fromjson(e, apiUrl)));
+          .map((e) => ProductMediaImageModel.fromjson(e)));
     } else {
       throw ServerException(message: body["message"]);
     }

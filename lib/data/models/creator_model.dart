@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:mythic_design/common/api_url.dart';
-
 import '../../domain/enities/creator.dart';
 
 class CreatorModel extends Equatable {
@@ -29,15 +27,15 @@ class CreatorModel extends Equatable {
       this.totalCollection,
       this.creatAt);
 
-  factory CreatorModel.fromjson(Map<String, dynamic> map, ApiUrl api) {
+  factory CreatorModel.fromjson(Map<String, dynamic> map) {
     return CreatorModel(
         map["creatorId"],
         map["nameFirst"],
         map["nameLast"],
         map["email"],
         map["bio"],
-        "${api.baseUrlImage}/${map["image"]}",
-        "${api.baseUrlImage}/${map["backgroundImage"]}",
+        map["image"],
+        map["backgroundImage"],
         map["address"],
         map["totalFollow"],
         map["totalCollection"],

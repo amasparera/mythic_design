@@ -82,7 +82,7 @@ class _WishlistPageState extends State<WishlistPage> {
                       width: 60,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(data[index].image),
+                              image: NetworkImage( "https://mythicserver.herokuapp.com/public/${data[index].image}"),
                               fit: BoxFit.cover),
                           borderRadius: BorderRadius.circular(4)),
                     ),
