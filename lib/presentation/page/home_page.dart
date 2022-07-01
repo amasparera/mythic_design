@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
           if (data.nowPlayingState == RequestState.loading) {
             return loadingView();
           } else if (data.nowPlayingState == RequestState.loaded) {
-            return ListView.builder(
+            return ListView.separated(
                 controller: data.homeListProduct,
                 padding: EdgeInsets.zero,
                 itemCount: data.listProducts.length + data.statusStateLoad,
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                     statusFavorite: data.listFavorite
                         .contains(data.listProducts[index - 1].productId),
                   );
-                });
+                }, separatorBuilder: (BuildContext context, int index) =>const SizedBox(height: 30,),);
           } else {
             return Center(child: Text(data.message));
           }

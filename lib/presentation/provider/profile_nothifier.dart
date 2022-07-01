@@ -9,7 +9,10 @@ import 'package:mythic_design/presentation/page/home_page.dart';
 class ProfileNothifier extends ChangeNotifier {
   final GetUser getUser;
   final HelperLocal helperLocal;
-  ProfileNothifier(this.helperLocal, this.getUser,);
+  ProfileNothifier(
+    this.helperLocal,
+    this.getUser,
+  );
 
   RequestState _nowUserState = RequestState.empty;
   RequestState get nowUserState => _nowUserState;
@@ -37,9 +40,9 @@ class ProfileNothifier extends ChangeNotifier {
     });
   }
 
-  logOut(BuildContext context){
+  logOut(BuildContext context) {
     helperLocal.resetData();
-   Navigator.pushReplacementNamed(context, HomePage.route);
-
+    Navigator.pushNamedAndRemoveUntil(
+        context, HomePage.route, ModalRoute.withName('/'));
   }
 }
