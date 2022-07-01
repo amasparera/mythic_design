@@ -4,14 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/domain/enities/creator.dart';
+import 'package:mythic_design/presentation/page/product_detail_page.dart';
 import 'package:mythic_design/presentation/provider/creator_nothifier.dart';
 import 'package:mythic_design/presentation/widget/bottol_app.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../common/size.dart';
 import '../../common/thema_app.dart';
+import '../provider/home_nothifier.dart';
 import '../provider/nitifikasi_nothifier.dart';
 import '../provider/wishlist_nothifier.dart';
+import '../widget/loading_widget.dart';
 import '../widget/wrap_sosial_media.dart';
 import 'notifikasi_page.dart';
 import 'wishlist_page.dart';
@@ -99,42 +103,140 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
                       }))
                 ],
               )),
-          Consumer<CreatorNothifier>(
-            builder: (context, data, _) => IconButton(
-                splashRadius: 20,
-                onPressed: () {},
-                icon: CircleAvatar(
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {
+                context.read<HomeNotifier>().goToProfile(context);
+              },
+              icon: Consumer<HomeNotifier>(builder: (context, data, _) {
+                return CircleAvatar(
                   backgroundColor: Colors.grey,
-                  backgroundImage: data.imageProfile != ""
-                      ? NetworkImage("https://mythicserver.herokuapp.com/public/${data.imageProfile}")
+                  backgroundImage: data.profilleImage != null ||
+                          data.profilleImage == ""
+                      ? NetworkImage(
+                          "https://mythicserver.herokuapp.com/public/${data.profilleImage!}")
                       : null,
                   radius: 15,
-                  child: data.imageProfile != ""
-                      ? null
-                      : const Icon(
+                  child: data.profilleImage == null || data.profilleImage == ""
+                      ? const Icon(
                           Icons.person,
                           color: Colors.white,
-                        ),
-                )),
-          ),
+                        )
+                      : null,
+                );
+              })),
           const SizedBox(
             width: defaultPading / 4,
           )
         ],
       ),
       body: Consumer<CreatorNothifier>(builder: (context, data, _) {
-        if (data.nowCreaotrState == RequestState.loaded) {
-          return _body(context, data.creator);
-        } else if (data.nowCreaotrState == RequestState.loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+        if (data.nowCreaotrState == RequestState.loading) {
+          return SizedBox(
+            width: double.infinity,
+            child: loadingView(),
           );
+        } else if (data.nowCreaotrState == RequestState.loaded) {
+          return _body(context, data.creator);
         } else {
           return Center(
             child: Text(data.message),
           );
         }
       }),
+    );
+  }
+
+  Widget loadingView() {
+    return Shimmer.fromColors(
+      // loop: 2,
+      period: const Duration(seconds: 4),
+      baseColor: Colors.grey.withOpacity(.1),
+      highlightColor: const Color.fromARGB(130, 255, 255, 255),
+      child: Column(
+        children: [
+          const SizedBox(height: 40),
+          const CircleAvatar(
+            radius: 45,
+          ),
+          LoadingWidget(
+            context: context,
+            borderRadius: 4,
+            height: 30,
+            width: MediaQuery.of(context).size.width * 2 / 4,
+            margin: const EdgeInsets.only(top: 10),
+          ),
+          LoadingWidget(
+            context: context,
+            borderRadius: 4,
+            height: 18,
+            width: MediaQuery.of(context).size.width * 2 / 4,
+            margin: const EdgeInsets.only(top: 4),
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(
+                3,
+                (index) => LoadingWidget(
+                  context: context,
+                  borderRadius: 4,
+                  height: 45,
+                  width: 80,
+                  margin: const EdgeInsets.only(top: 25),
+                ),
+              )),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: LoadingWidget(
+              context: context,
+              borderRadius: 4,
+              height: 18,
+              width: MediaQuery.of(context).size.width * 1 / 4,
+              margin: const EdgeInsets.only(top: 20, left: defaultPading),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: LoadingWidget(
+              context: context,
+              borderRadius: 4,
+              height: 18,
+              width: MediaQuery.of(context).size.width * 3.4 / 4,
+              margin: const EdgeInsets.only(top: 20, left: defaultPading),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: LoadingWidget(
+              context: context,
+              borderRadius: 4,
+              height: 18,
+              width: MediaQuery.of(context).size.width * 3.4 / 4,
+              margin: const EdgeInsets.only(top: 8, left: defaultPading),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: LoadingWidget(
+              context: context,
+              borderRadius: 4,
+              height: 18,
+              width: MediaQuery.of(context).size.width * 3.4 / 4,
+              margin: const EdgeInsets.only(top: 8, left: defaultPading),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: LoadingWidget(
+              context: context,
+              borderRadius: 4,
+              height: 18,
+              width: MediaQuery.of(context).size.width * 3 / 4,
+              margin: const EdgeInsets.only(top: 8, left: defaultPading),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -158,7 +260,8 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage("https://mythicserver.herokuapp.com/public/${creator.backgroundImage}"))),
+                    image: NetworkImage(
+                        "https://mythicserver.herokuapp.com/public/${creator.backgroundImage}"))),
           ),
           SizedBox(
             height: 250,
@@ -174,7 +277,8 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
                   child: CircleAvatar(
                     backgroundColor: Colors.grey,
                     radius: 50,
-                    backgroundImage: NetworkImage("https://mythicserver.herokuapp.com/public/${creator.image}"),
+                    backgroundImage: NetworkImage(
+                        "https://mythicserver.herokuapp.com/public/${creator.image}"),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -341,12 +445,15 @@ class _ProfileCreatorPageState extends State<ProfileCreatorPage> {
           return Wrap(
             children: List.generate(data.image.length, (index) {
               return GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, ProductDetailPage.route,
+                      arguments: data.image[index].productId);
+                },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width / 2,
                   height: MediaQuery.of(context).size.width / 2,
                   child: Image.network(
-                   "https://mythicserver.herokuapp.com/public/${data.image[index].image}",
+                    "https://mythicserver.herokuapp.com/public/${data.image[index].image}",
                     fit: BoxFit.cover,
                   ),
                 ),

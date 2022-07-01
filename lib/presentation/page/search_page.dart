@@ -1,29 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:mythic_design/common/requeststate.dart';
+import 'package:mythic_design/presentation/page/product_detail_page.dart';
+import 'package:mythic_design/presentation/provider/search_nothifier.dart';
 import 'package:mythic_design/presentation/widget/animasi_fade_in.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../common/size.dart';
 import '../../common/thema_app.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
   static const String route = "/search";
 
   @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  @override
+  void initState() {
+    context.read<SearchNothifier>().init();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<String> category = [
-      "All Populer",
+      "Populer",
       "New",
       "High Price",
       "Low Price",
-      "Icon",
-      "Template"
+      "Cosplay",
+      "Illutration"
     ];
     return DefaultTabController(
-        length: category.length,
-        child: Scaffold(
-            body: SafeArea(
-                child: Column(children: [
+      length: category.length,
+      child:
+          Scaffold(body: Consumer<SearchNothifier>(builder: (context, data, _) {
+        return SafeArea(
+            child: Column(children: [
           Container(
             height: 48,
             margin: const EdgeInsets.only(
@@ -45,9 +62,7 @@ class SearchPage extends StatelessWidget {
                 const SizedBox(width: coverPading),
                 Expanded(
                   child: TextField(
-                      onChanged: (value) {
-                        // print("mulai $value");
-                      },
+                      onSubmitted: (value) => data.onTap(100),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Search items, collections, and accounts",
@@ -58,47 +73,154 @@ class SearchPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-              alignment: Alignment.centerLeft,
-              height: 40,
-              margin: const EdgeInsets.symmetric(horizontal: defaultPading),
-              padding: const EdgeInsets.symmetric(vertical: defaultPading / 2),
-              child: TabBar(
-                  indicatorPadding: const EdgeInsets.symmetric(horizontal: 4),
-                  onTap: (value) {
-                    // print(value);
-                  },
-                  indicator: BoxDecoration(
-                      // color: Colors.black,
-                      gradient: gradientButton,
-                      borderRadius: BorderRadius.circular(20)),
-                  isScrollable: true,
-                  splashBorderRadius: BorderRadius.circular(20),
-                  unselectedLabelStyle: const TextStyle(
-                      color: label, fontWeight: FontWeight.bold),
-                  unselectedLabelColor: label,
-                  tabs: List.generate(
-                      category.length,
-                      (index) => Tab(
-                            text: category[index],
-                          )))),
-          Expanded(
-              child: TabBarView(
-                  children: List.generate(
-            category.length,
-            (index) => GridView.builder(
+          if (data.mode == false) _tabbar(context, category),
+          if (data.mode == false) _tabbarview(category),
+          if (data.mode == true) Expanded(child: _viewSearchResult(data)),
+        ]));
+      })),
+    );
+  }
+
+  Expanded _tabbarview(List<String> category) {
+    return Expanded(
+        child: TabBarView(
+            children: List.generate(
+      category.length,
+      (index) => Consumer<SearchNothifier>(builder: (context, data, _) {
+        switch (data.nowStateTabbar) {
+          case RequestState.loading:
+            return Shimmer.fromColors(
+              period: const Duration(seconds: 4),
+              baseColor: Colors.grey.withOpacity(.1),
+              highlightColor: const Color.fromARGB(130, 255, 255, 255),
+              child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 4, vertical: defaultPading),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 4,
+                      mainAxisSpacing: 4,
+                      crossAxisCount: 2),
+                  itemCount: 6,
+                  itemBuilder: (context, index) =>
+                      Container(color: Colors.grey)),
+            );
+
+          case RequestState.loaded:
+            return GridView.builder(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 4, vertical: defaultPading),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisSpacing: 4, mainAxisSpacing: 4, crossAxisCount: 2),
-                itemCount: 13,
+                itemCount: data.listProduct.length,
                 itemBuilder: (context, index) => FadeIn(
-                      delay: Duration(milliseconds: 100 * index),
-                      child: Container(
-                        color: Colors.amber,
+                      delay: Duration(milliseconds: 150 * index),
+                      child: GestureDetector(
+                        onTap: () => Navigator.pushNamed(
+                            context, ProductDetailPage.route,
+                            arguments: data.listProduct[index].productId),
+                        child: Container(
+                          color: Colors.grey.withOpacity(.1),
+                          child: Image.network(
+                            data.api.baseUrlImage +
+                                data.listProduct[index].image,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    )),
-          )))
-        ]))));
+                    ));
+
+          default:
+            return Center(child: Text(data.message));
+        }
+      }),
+    )));
+  }
+
+  Container _tabbar(BuildContext context, List<String> category) {
+    return Container(
+        alignment: Alignment.centerLeft,
+        height: 40,
+        margin: const EdgeInsets.symmetric(horizontal: defaultPading),
+        padding: const EdgeInsets.symmetric(vertical: defaultPading / 2),
+        child: TabBar(
+            indicatorPadding: const EdgeInsets.symmetric(horizontal: 4),
+            onTap: (value) {
+              context.read<SearchNothifier>().onTap(value);
+            },
+            indicator: BoxDecoration(
+                // color: Colors.black,
+                gradient: gradientButton,
+                borderRadius: BorderRadius.circular(20)),
+            isScrollable: true,
+            splashBorderRadius: BorderRadius.circular(20),
+            unselectedLabelStyle:
+                const TextStyle(color: label, fontWeight: FontWeight.bold),
+            unselectedLabelColor: label,
+            tabs: List.generate(
+                category.length,
+                (index) => Tab(
+                      text: category[index],
+                    ))));
+  }
+
+  Widget _viewSearchResult(SearchNothifier data) {
+    switch (data.serachState) {
+      case RequestState.loading:
+        return Shimmer.fromColors(
+          period: const Duration(seconds: 4),
+          baseColor: Colors.grey.withOpacity(.1),
+          highlightColor: const Color.fromARGB(130, 255, 255, 255),
+          child: GridView.builder(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 4, vertical: defaultPading),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 4, mainAxisSpacing: 4, crossAxisCount: 2),
+              itemCount: 6,
+              itemBuilder: (context, index) => Container(color: Colors.grey)),
+        );
+
+      case RequestState.loaded:
+        return GridView.builder(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 4, vertical: defaultPading),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisSpacing: 4, mainAxisSpacing: 4, crossAxisCount: 2),
+            itemCount: data.listProduct.length,
+            itemBuilder: (context, index) => FadeIn(
+                  delay: Duration(milliseconds: 150 * index),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                        context, ProductDetailPage.route,
+                        arguments: data.listProduct[index].productId),
+                    child: Container(
+                      color: Colors.grey.withOpacity(.1),
+                      child: Image.network(
+                        data.api.baseUrlImage + data.listProduct[index].image,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ));
+
+      default:
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Icon(Icons.search_rounded, color: placeholder, size: 18),
+                Text(
+                  data.message,
+                  style: const TextStyle(color: placeholder),
+                ),
+              ],
+            ),
+            TextButton(onPressed: () => data.back(), child: const Text("Back"))
+          ],
+        );
+    }
   }
 }

@@ -8,10 +8,12 @@ import 'package:mythic_design/domain/enities/user.dart';
 import 'package:mythic_design/presentation/provider/profile_nothifier.dart';
 import 'package:mythic_design/presentation/widget/bottol_app.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../common/size.dart';
 import '../provider/nitifikasi_nothifier.dart';
 import '../provider/wishlist_nothifier.dart';
+import '../widget/loading_widget.dart';
 import 'notifikasi_page.dart';
 import 'wishlist_page.dart';
 
@@ -100,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Consumer<ProfileNothifier>(builder: (context, data, child) {
         if (data.nowUserState == RequestState.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return SizedBox(width: double.infinity, child: loadingView());
         } else if (data.nowUserState == RequestState.loaded) {
           return _bodyProfile(data.user);
         } else {
@@ -109,6 +111,45 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
       }),
+    );
+  }
+
+  Widget loadingView() {
+    return Shimmer.fromColors(
+      // loop: 2,
+      period: const Duration(seconds: 4),
+      baseColor: Colors.grey.withOpacity(.1),
+      highlightColor: const Color.fromARGB(130, 255, 255, 255),
+      child: Column(
+        children: [
+          const SizedBox(height: 40),
+          const CircleAvatar(
+            radius: 45,
+          ),
+          LoadingWidget(
+            context: context,
+            borderRadius: 4,
+            height: 30,
+            width: MediaQuery.of(context).size.width * 2 / 4,
+            margin: const EdgeInsets.only(top: 10),
+          ),
+          LoadingWidget(
+            context: context,
+            borderRadius: 4,
+            height: 18,
+            width: MediaQuery.of(context).size.width * 2 / 4,
+            margin: const EdgeInsets.only(top: 4),
+          ),
+       
+          LoadingWidget(
+            context: context,
+            borderRadius: 4,
+            height: 150,
+            width: MediaQuery.of(context).size.width * 8.5 / 10,
+            margin: const EdgeInsets.only(top: 25),
+          ),
+        ],
+      ),
     );
   }
 
@@ -135,7 +176,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ? BoxDecoration(
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage("https://mythicserver.herokuapp.com/public/${user.backgroundImage}")))
+                          image: NetworkImage(
+                              "https://mythicserver.herokuapp.com/public/${user.backgroundImage}")))
                   : null,
             ),
             SizedBox(
@@ -151,8 +193,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: CircleAvatar(
                       backgroundColor: Colors.grey,
                       radius: 50,
-                      backgroundImage:
-                          user.image != "" ? NetworkImage("https://mythicserver.herokuapp.com/public/${user.image}") : null,
+                      backgroundImage: user.image != ""
+                          ? NetworkImage(
+                              "https://mythicserver.herokuapp.com/public/${user.image}")
+                          : null,
                       child: user.image != ""
                           ? null
                           : const Icon(

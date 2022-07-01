@@ -18,6 +18,15 @@ class ApiUrl {
   final String getProducts = "/api/home/";
   final String getProductDetail = "/api/product/";
 
+  // api search
+  final String searchProduct = "/api/search/";
+  final String searchProductPopuler = "/api/search/populer";
+  final String searchProductNew = "/api/search/new";
+  final String searchProductHighPrice = "/api/search/highprice";
+  final String searchProductLowPrice = "/api/search/lowprice";
+  final String searchProductCosplay = "/api/search/cosplay";
+  final String searchProductIllustration = "/api/search/illustration";
+
   // creator
   final String getCreator = "/api/creator/";
   final String getCreatorCollection= "/api/creator/collection/";

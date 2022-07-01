@@ -7,10 +7,12 @@ import 'package:mythic_design/presentation/page/profile_creator_page.dart';
 import 'package:mythic_design/presentation/provider/creator_nothifier.dart';
 import 'package:mythic_design/presentation/widget/animasi_fade_in.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../common/requeststate.dart';
 import '../provider/detail_product_nothifier.dart';
 import '../widget/buy_current.dart';
+import '../widget/loading_widget.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final String productId;
@@ -38,9 +40,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       backgroundColor: backgroundWhite,
       body: Consumer<ProductDetailNothifier>(builder: (context, data, child) {
         if (data.nowProductDetailState == RequestState.loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return SizedBox(width: double.infinity, child: loadingView());
         } else if (data.nowProductDetailState == RequestState.loaded) {
           return _body(product: data.product);
         } else {
@@ -49,6 +49,34 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           );
         }
       }),
+    );
+  }
+
+  Widget loadingView() {
+    return Shimmer.fromColors(
+      // loop: 2,
+      period: const Duration(seconds: 4),
+      baseColor: Colors.grey.withOpacity(.1),
+      highlightColor: const Color.fromARGB(130, 255, 255, 255),
+      child: Column(
+        children: [
+          const SizedBox(height: 40),
+          LoadingWidget(
+            context: context,
+            borderRadius: 4,
+            height: 55,
+            width: MediaQuery.of(context).size.width * 3 / 4,
+            margin: const EdgeInsets.only(top: defaultPading*3),
+          ),
+          LoadingWidget(
+            context: context,
+            borderRadius: 4,
+            height: 400,
+            width: MediaQuery.of(context).size.width * 8.5 / 10,
+            margin: const EdgeInsets.only(top: 25),
+          ),
+        ],
+      ),
     );
   }
 
@@ -78,7 +106,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   product.listMediaImage!.length,
                   (index) => FadeIn(
                         delay: Duration(milliseconds: 300 * index),
-                        child: Image.network( "https://mythicserver.herokuapp.com/public/${product.listMediaImage![index].image}",
+                        child: Image.network(
+                            "https://mythicserver.herokuapp.com/public/${product.listMediaImage![index].image}",
                             fit: BoxFit.fitWidth),
                       ))),
           FutureBuilder(
@@ -96,7 +125,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   Widget _delay({required Product product}) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.all(defaultPading),
@@ -195,7 +225,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       children: [
                         CircleAvatar(
                           backgroundColor: Colors.grey,
-                          backgroundImage: NetworkImage("https://mythicserver.herokuapp.com/public/${product.creatorImage}"),
+                          backgroundImage: NetworkImage(
+                              "https://mythicserver.herokuapp.com/public/${product.creatorImage}"),
                           radius: 16,
                         ),
                         Padding(
@@ -212,12 +243,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ],
                     )),
               ),
-            
               const Spacer(),
               Consumer<CreatorNothifier>(builder: (context, data, _) {
-                return GestureDetector(onTap: (){
-                  data.followUnfollow(int.parse(product.creatorId));
-                },
+                return GestureDetector(
+                  onTap: () {
+                    data.followUnfollow(int.parse(product.creatorId));
+                  },
                   child: Container(
                       padding: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
@@ -251,14 +282,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ],
           ),
         ),
-         Padding(
+        Padding(
           padding: const EdgeInsets.all(defaultPading),
-          child: Text("Publish : ${DateFormat.yMMMMEEEEd().format(DateTime.parse(product.creatAt))}",style: const TextStyle(color: label,fontSize: 10),),
+          child: Text(
+            "Publish : ${DateFormat.yMMMMEEEEd().format(DateTime.parse(product.creatAt))}",
+            style: const TextStyle(color: label, fontSize: 10),
+          ),
         ),
         Container(
           margin: const EdgeInsets.symmetric(
               horizontal: defaultPading, vertical: defaultPading * 2),
-          child:  BuyCurrent(price: product.productPrice,product: product),
+          child: BuyCurrent(price: product.productPrice, product: product),
         ),
       ],
     );

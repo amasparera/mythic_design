@@ -13,7 +13,7 @@ class HelperLocal {
   resetData()async{
     final local = await SharedPreferences.getInstance();
     local.clear();
-    
+    saveInstal(instal: true);
   }
 
   // save

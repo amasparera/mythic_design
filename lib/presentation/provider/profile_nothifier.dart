@@ -9,7 +9,7 @@ import 'package:mythic_design/presentation/page/home_page.dart';
 class ProfileNothifier extends ChangeNotifier {
   final GetUser getUser;
   final HelperLocal helperLocal;
-  ProfileNothifier(this.helperLocal, {required this.getUser});
+  ProfileNothifier(this.helperLocal, this.getUser,);
 
   RequestState _nowUserState = RequestState.empty;
   RequestState get nowUserState => _nowUserState;

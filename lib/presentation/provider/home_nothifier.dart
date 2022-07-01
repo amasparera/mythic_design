@@ -17,10 +17,22 @@ class HomeNotifier extends ChangeNotifier {
   final GetProducts getProducts;
   final HelperLocal helperLocal;
 
-  HomeNotifier({required this.getProducts, required this.helperLocal});
+  HomeNotifier(this.getProducts, this.helperLocal);
 
   RequestState _nowProductState = RequestState.empty;
   RequestState get nowPlayingState => _nowProductState;
+
+  RequestState _nowProductStateLoad = RequestState.empty;
+  RequestState get nowPlayingStateLoad => _nowProductStateLoad;
+
+  ScrollController homeListProduct = ScrollController();
+
+  int get statusStateLoad {
+    if (_nowProductStateLoad == RequestState.empty) {
+      return 1;
+    }
+    return 2;
+  }
 
   List<Product> _listProducts = [];
   List<Product> get listProducts => _listProducts;
@@ -37,17 +49,31 @@ class HomeNotifier extends ChangeNotifier {
 
   final service = NothifLocal();
 
+  Future<void> fechProductLoad(BuildContext context) async {
+    final result = await getProducts.execute(page: page);
+    await Future.delayed(const Duration(seconds: 1));
+    result.fold((l) {
+      _nowProductStateLoad = RequestState.loaded;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(l.message),
+      ));
+      notifyListeners();
+    }, (r) {
+      _nowProductStateLoad = RequestState.empty;
+      _listProducts.addAll(r);
+      notifyListeners();
+    });
+  }
+
   Future<void> fechProduct() async {
     _nowProductState = RequestState.loading;
     notifyListeners();
-
     final result = await getProducts.execute(page: page);
     result.fold((l) {
       _nowProductState = RequestState.error;
       _message = l.message;
       notifyListeners();
     }, (r) {
-      page = page + 1;
       _nowProductState = RequestState.loaded;
       _listProducts = r;
       notifyListeners();
@@ -60,7 +86,6 @@ class HomeNotifier extends ChangeNotifier {
     var isLogin = await helperLocal.loadLogin();
     if (isLogin) {
       profilleImage = await helperLocal.loadProfileImage();
-
       notifyListeners();
     }
   }
@@ -91,7 +116,9 @@ class HomeNotifier extends ChangeNotifier {
     helperLocal.loadInstal().then((value) {
       if (value == false) {
         Future.delayed(const Duration(seconds: 5), () {
-          context.read<NotifikasiNothifier>().addNothif(_install..time = DateTime.now());
+          context
+              .read<NotifikasiNothifier>()
+              .addNothif(_install..time = DateTime.now());
           helperLocal.saveInstal(instal: true);
           service.showNotif(
               id: _install.id,
@@ -104,11 +131,21 @@ class HomeNotifier extends ChangeNotifier {
     });
   }
 
-  Future<void> init(context) async {
+  void init(context) {
+    _nowProductStateLoad = RequestState.empty;
     service.init();
     service.onNothif.listen((value) {
       if (value != null) {
         Navigator.pushNamed(context, value);
+      }
+    });
+
+    homeListProduct.addListener(() async {
+      if (homeListProduct.position.maxScrollExtent == homeListProduct.offset) {
+        _nowProductStateLoad = RequestState.loading;
+        notifyListeners();
+        page = page + 1;
+        await fechProductLoad(context);
       }
     });
   }
@@ -119,4 +156,10 @@ class HomeNotifier extends ChangeNotifier {
         "Terimakasih telah menguji coba aplikasi saya, mohon maaf sebagain fitur masih di kerjakan di bagian server.\nSegala masukan bisa dikirimkan ke developer terimakasih.",
     id: 0,
   );
+
+  @override
+  void dispose() {
+    homeListProduct.dispose();
+    super.dispose();
+  }
 }

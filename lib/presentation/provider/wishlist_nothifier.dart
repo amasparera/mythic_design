@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/helper_local.dart';
 import 'package:mythic_design/common/requeststate.dart';
@@ -72,12 +74,36 @@ class WishlistNothifier extends ChangeNotifier {
     }
   }
 
+  void hapus(BuildContext context, Wishlist wishlist) async {
+    _wishlistInt.remove(int.parse(wishlist.idProduct));
+    notifyListeners();
+    // remove
+    final result = await deleteWishlist.execute(wishlist.idProduct);
+    result.fold((l) {
+      _message = l.message;
+      _wishlistInt.add(int.parse(wishlist.idProduct));
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(l.message),
+      ));
+      notifyListeners();
+    }, (r) {
+      // _message = r;
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //   content: Text(r),
+      // ));
+      _wishlist.remove(wishlist);
+      notifyListeners();
+    });
+  }
+
   void getWishlist() async {
     _nowState = RequestState.loading;
     _wishlistInt.clear();
     _wishlistSelect.clear();
     notifyListeners();
     final data = await helperLocal.loadProfileId();
+    log(data.toString());
     if (data != null && data != "") {
       final result = await getWislist.execute(data);
       result.fold((l) {
@@ -90,6 +116,10 @@ class WishlistNothifier extends ChangeNotifier {
         _wishlistInt = r.map((e) => int.parse(e.idProduct)).toList();
         notifyListeners();
       });
+    } else {
+      _message = "Are you not login..";
+       _nowState = RequestState.error;
+       notifyListeners();
     }
   }
 
@@ -161,7 +191,7 @@ class WishlistNothifier extends ChangeNotifier {
         content: Text("select one item"),
       ));
     } else {
-      Navigator.pushNamed(context, PayPage.route,arguments: total);
+      Navigator.pushNamed(context, PayPage.route, arguments: total);
     }
   }
 }

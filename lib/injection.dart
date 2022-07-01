@@ -4,15 +4,18 @@ import 'package:mythic_design/common/helper_local.dart';
 import 'package:mythic_design/data/datasources/creator_remote.dart';
 import 'package:mythic_design/data/datasources/product_remote_db.dart';
 import 'package:mythic_design/data/datasources/auth_remote.dart';
+import 'package:mythic_design/data/datasources/search_remote.dart';
 import 'package:mythic_design/data/datasources/user_remote_db.dart';
 import 'package:mythic_design/data/datasources/wishlist_remote.dart';
 import 'package:mythic_design/data/repository_impl/auth_impl.dart';
 import 'package:mythic_design/data/repository_impl/creator_impl.dart';
+import 'package:mythic_design/data/repository_impl/search_impl.dart';
 import 'package:mythic_design/data/repository_impl/user_impl.dart';
 import 'package:mythic_design/data/repository_impl/wishlist_impl.dart';
 import 'package:mythic_design/domain/repository/auth_repository.dart';
 import 'package:mythic_design/domain/repository/creator_repository.dart';
 import 'package:mythic_design/domain/repository/product_repository.dart';
+import 'package:mythic_design/domain/repository/search_repository.dart';
 import 'package:mythic_design/domain/repository/user_repository.dart';
 import 'package:mythic_design/domain/repository/wishlist_repository.dart';
 import 'package:mythic_design/domain/user_case/add_wishlist.dart';
@@ -25,6 +28,7 @@ import 'package:mythic_design/domain/user_case/get_user.dart';
 import 'package:http/http.dart' as http;
 import 'package:mythic_design/domain/user_case/get_wishlist.dart';
 import 'package:mythic_design/domain/user_case/login_auth.dart';
+import 'package:mythic_design/domain/user_case/search_product.dart';
 import 'package:mythic_design/presentation/provider/creator_nothifier.dart';
 import 'package:mythic_design/presentation/provider/detail_product_nothifier.dart';
 import 'package:mythic_design/presentation/provider/nitifikasi_nothifier.dart';
@@ -40,15 +44,12 @@ final GetIt locator = GetIt.instance;
 
 void init() async {
   // provider
-  locator.registerFactory(
-      () => HomeNotifier(getProducts: locator(), helperLocal: locator()));
-  locator
-      .registerFactory(() => ProfileNothifier(locator(), getUser: locator()));
-  locator.registerFactory(
-      () => ProductDetailNothifier(getProductDetail: locator()));
+  locator.registerFactory(() => HomeNotifier(locator(), locator()));
+  locator.registerFactory(() => ProfileNothifier(locator(), locator()));
+  locator.registerFactory(() => ProductDetailNothifier(locator()));
   locator
       .registerFactory(() => LoginNothifier(locator(), locator(), locator()));
-  locator.registerFactory(() => SearchNothifier());
+  locator.registerFactory(() => SearchNothifier(locator(),locator()));
   locator
       .registerFactory(() => CreatorNothifier(locator(), locator(), locator()));
   locator.registerFactory(
@@ -58,8 +59,7 @@ void init() async {
   // use case
   locator
       .registerLazySingleton(() => GetProducts(productRepository: locator()));
-  locator.registerLazySingleton(
-      () => GetProductDetail(productRepository: locator()));
+  locator.registerLazySingleton(() => GetProductDetail(locator()));
   locator.registerLazySingleton(() => GetUser(userRepository: locator()));
   locator.registerLazySingleton(() => LoginAuth(locator()));
   locator.registerLazySingleton(() => SingUpAuth(locator()));
@@ -68,6 +68,7 @@ void init() async {
   locator.registerLazySingleton(() => GetWislist(locator()));
   locator.registerLazySingleton(() => AddWishlist(locator()));
   locator.registerLazySingleton(() => DeleteWishlist(locator()));
+  locator.registerLazySingleton(() => SearchProductUseCase(locator()));
 
   // repository
   locator.registerLazySingleton<ProductRepository>(
@@ -80,19 +81,22 @@ void init() async {
       () => CreatorRepositoryImpl(locator()));
   locator.registerLazySingleton<WishlistRepository>(
       () => WishlistRepositoryImpl(locator()));
+  locator.registerLazySingleton<SearchRepository>(
+      () => SearchRepositoryImpl(locator()));
 
   // data source
   locator.registerLazySingleton<ProductRemoteDataSource>(
       () => ProductRemoteDataSourceImpl(apiUrl: locator(), client: locator()));
   locator.registerLazySingleton<UserRemoteDataSource>(
       () => UserRemoteDataSourceImpl(client: locator(), apiUrl: locator()));
-  locator.registerLazySingleton<AuthRemoteRepository>(() =>
-      AuthRemoteRepositoryImpl(
-          client: locator(), apiUrl: locator(), local: locator()));
+  locator.registerLazySingleton<AuthRemoteRepository>(
+      () => AuthRemoteRepositoryImpl(locator(), locator(), locator()));
   locator.registerLazySingleton<CreatorRemoteRepository>(
       () => CreatorRemoteRepositoryImpl(locator(), locator()));
   locator.registerLazySingleton<WishlistRemoteSource>(
       () => WishlistRemoteSourceImpl(locator(), locator()));
+  locator.registerLazySingleton<SearchRemoteDataSource>(
+      () => SearchRemoteDataSourceImpl(locator(), locator()));
 
   // helper
   locator.registerLazySingleton(() => HelperLocal());

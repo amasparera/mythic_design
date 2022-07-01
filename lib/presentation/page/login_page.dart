@@ -87,6 +87,8 @@ class LoginPage extends StatelessWidget {
                 return 'Please enter email';
               } else if (value.length <= 6) {
                 return "Minimum 6 charakter";
+              } else if (value.contains(" ")) {
+                return "Forbidden to use space";
               }
               return null;
             },
@@ -202,6 +204,21 @@ class LoginPage extends StatelessWidget {
               )
             ],
           ),
+          const SizedBox(height: 4),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+              context.read<LoginNothifier>().login(context, "demo@gmail.com", "demo12345");
+              },
+              child: const Text(
+                "Login with demo acount",
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Color(0xff31A8FF),
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           const SizedBox(height: defaultPading * 2)
         ],
       ),
@@ -236,6 +253,8 @@ class LoginPage extends StatelessWidget {
                 return 'Please enter email';
               } else if (value.length <= 6) {
                 return "Minimum 6 charakter";
+              } else if (value.contains(" ")) {
+                return "Forbidden to use space";
               }
               return null;
             },
@@ -347,6 +366,21 @@ class LoginPage extends StatelessWidget {
                 ),
               )
             ],
+          ),
+          const SizedBox(height: 4),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+              context.read<LoginNothifier>().login(context, "demo@gmail.com", "demo12345");
+              },
+              child: const Text(
+                "Login with demo acount",
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Color(0xff31A8FF),
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
           const SizedBox(height: defaultPading * 2)
         ],

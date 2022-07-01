@@ -49,13 +49,13 @@ class LoginNothifier extends ChangeNotifier {
       notifyListeners();
     }, (r) {
       _valid = false;
-      Navigator.pushNamed(context, HomePage.route);
+       Navigator.pushReplacementNamed(context, HomePage.route);
       notifyListeners();
     });
   }
 
   void login(BuildContext context, String email, String password) async {
-    print(email + password);
+   
     _valid = true;
     notifyListeners();
     final result = await loginAuth.execute(email: email, password: password);
@@ -69,7 +69,7 @@ class LoginNothifier extends ChangeNotifier {
     }, (r) {
       _valid = false;
       helperLocal.saveLogin(login: true);
-      Navigator.pushNamed(context, HomePage.route);
+      Navigator.pushReplacementNamed(context, HomePage.route);
       notifyListeners();
     });
   }

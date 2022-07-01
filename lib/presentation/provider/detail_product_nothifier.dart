@@ -6,7 +6,7 @@ import 'package:mythic_design/domain/user_case/get_product_detail.dart';
 class ProductDetailNothifier extends ChangeNotifier {
   final GetProductDetail getProductDetail;
 
-  ProductDetailNothifier({required this.getProductDetail});
+  ProductDetailNothifier(this.getProductDetail);
 
   RequestState _nowProductDetailState = RequestState.empty;
   RequestState get nowProductDetailState => _nowProductDetailState;
