@@ -134,38 +134,40 @@ class _HomePageState extends State<HomePage> {
           if (data.nowPlayingState == RequestState.loading) {
             return loadingView();
           } else if (data.nowPlayingState == RequestState.loaded) {
-            return ListView.separated(
-                controller: data.homeListProduct,
-                padding: EdgeInsets.zero,
-                itemCount: data.listProducts.length + data.statusStateLoad,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return coverHomeSearch(context);
-                  }
+            return ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              controller: data.homeListProduct,
+              padding: EdgeInsets.zero,
+              itemCount: data.listProducts.length + data.statusStateLoad,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return coverHomeSearch(context);
+                }
 
-                  if (data.nowPlayingStateLoad == RequestState.loaded &&
-                      index == data.listProducts.length + 1) {
-                    return Center(
-                        child: Padding(
-                      padding: const EdgeInsets.all(defaultPading),
-                      child: Text(
-                        data.message,
-                      ),
-                    ));
-                  }
-                  if (data.nowPlayingStateLoad != RequestState.empty &&
-                      index == data.listProducts.length + 1) {
-                    return _loadProducts();
-                  }
-                  return CardHome(
-                    onTap: () => Navigator.pushNamed(
-                        context, ProductDetailPage.route,
-                        arguments: data.listProducts[index - 1].productId),
-                    product: data.listProducts[index - 1],
-                    statusFavorite: data.listFavorite
-                        .contains(data.listProducts[index - 1].productId),
-                  );
-                }, separatorBuilder: (BuildContext context, int index) =>const SizedBox(height: 30,),);
+                if (data.nowPlayingStateLoad == RequestState.loaded &&
+                    index == data.listProducts.length + 1) {
+                  return Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(defaultPading),
+                    child: Text(
+                      data.message,
+                    ),
+                  ));
+                }
+                if (data.nowPlayingStateLoad != RequestState.empty &&
+                    index == data.listProducts.length + 1) {
+                  return _loadProducts();
+                }
+                return CardHome(
+                  onTap: () => Navigator.pushNamed(
+                      context, ProductDetailPage.route,
+                      arguments: data.listProducts[index - 1].productId),
+                  product: data.listProducts[index - 1],
+                  statusFavorite: data.listFavorite
+                      .contains(data.listProducts[index - 1].productId),
+                );
+              },
+            );
           } else {
             return Center(child: Text(data.message));
           }

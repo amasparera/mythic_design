@@ -51,7 +51,7 @@ class HomeNotifier extends ChangeNotifier {
 
   Future<void> fechProductLoad(BuildContext context) async {
     final result = await getProducts.execute(page: page);
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 3));
     result.fold((l) {
       _nowProductStateLoad = RequestState.loaded;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
