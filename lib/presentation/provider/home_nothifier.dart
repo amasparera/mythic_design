@@ -131,11 +131,16 @@ class HomeNotifier extends ChangeNotifier {
     });
   }
 
+  void clearData() {
+    helperLocal.clear();
+  }
+
   void init(context) {
     _nowProductStateLoad = RequestState.empty;
     service.init();
-    service.onNothif.listen((value) {
+    service.onNothif.listen((value) async {
       if (value != null) {
+        service.onNothif.value = null;
         Navigator.pushNamed(context, value);
       }
     });
@@ -160,6 +165,7 @@ class HomeNotifier extends ChangeNotifier {
   @override
   void dispose() {
     homeListProduct.dispose();
+    service.onNothif.close();
     super.dispose();
   }
 }

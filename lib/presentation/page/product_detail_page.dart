@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mythic_design/common/size.dart';
@@ -66,7 +67,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             borderRadius: 4,
             height: 55,
             width: MediaQuery.of(context).size.width * 3 / 4,
-            margin: const EdgeInsets.only(top: defaultPading*3),
+            margin: const EdgeInsets.only(top: defaultPading * 3),
           ),
           LoadingWidget(
             context: context,
@@ -106,8 +107,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   product.listMediaImage!.length,
                   (index) => FadeIn(
                         delay: Duration(milliseconds: 300 * index),
-                        child: Image.network(
-                            "https://mythicserver.herokuapp.com/public/${product.listMediaImage![index].image}",
+                        child: CachedNetworkImage(
+                            imageUrl:
+                                "https://mythicserver.herokuapp.com/public/${product.listMediaImage![index].image}",
                             fit: BoxFit.fitWidth),
                       ))),
           FutureBuilder(

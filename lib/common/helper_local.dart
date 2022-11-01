@@ -10,10 +10,15 @@ class HelperLocal {
   final String keyProfileImage = "KEY_PROFILE_IMAGE";
 
   // reset
-  resetData()async{
+  resetData() async {
     final local = await SharedPreferences.getInstance();
     local.clear();
     saveInstal(instal: true);
+  }
+
+  clear() async {
+    final local = await SharedPreferences.getInstance();
+    local.clear();
   }
 
   // save
@@ -73,7 +78,7 @@ class HelperLocal {
     return local.getString(keyProfileId);
   }
 
-  Future<String?> loadToken()async {
+  Future<String?> loadToken() async {
     final local = await SharedPreferences.getInstance();
     return local.getString(keyToken);
   }

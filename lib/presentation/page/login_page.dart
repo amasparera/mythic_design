@@ -89,6 +89,8 @@ class LoginPage extends StatelessWidget {
                 return "Minimum 6 charakter";
               } else if (value.contains(" ")) {
                 return "Forbidden to use space";
+              } else if (!value.contains("@")) {
+                return "Email not valid";
               }
               return null;
             },
@@ -208,7 +210,9 @@ class LoginPage extends StatelessWidget {
           Center(
             child: GestureDetector(
               onTap: () {
-              context.read<LoginNothifier>().login(context, "demo@gmail.com", "demo12345");
+                context
+                    .read<LoginNothifier>()
+                    .login(context, "demo@gmail.com", "demo12345");
               },
               child: const Text(
                 "Login with demo acount",
@@ -371,7 +375,9 @@ class LoginPage extends StatelessWidget {
           Center(
             child: GestureDetector(
               onTap: () {
-              context.read<LoginNothifier>().login(context, "demo@gmail.com", "demo12345");
+                context
+                    .read<LoginNothifier>()
+                    .login(context, "demo@gmail.com", "demo12345");
               },
               child: const Text(
                 "Login with demo acount",

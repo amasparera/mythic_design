@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/requeststate.dart';
 import 'package:mythic_design/common/size.dart';
@@ -42,9 +43,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // floatingActionButton: FloatingActionButton(onPressed: () {
-        //   context.read<HomeNotifier>().fechProductLoad();
-        // }),
+        floatingActionButton: FloatingActionButton(
+            onPressed: context.read<HomeNotifier>().clearData),
         appBar: AppBar(
           elevation: 0,
           title: Image.asset(
@@ -110,11 +110,12 @@ class _HomePageState extends State<HomePage> {
                 icon: Consumer<HomeNotifier>(builder: (context, data, _) {
                   return CircleAvatar(
                     backgroundColor: Colors.grey,
-                    backgroundImage: data.profilleImage != null ||
-                            data.profilleImage == ""
-                        ? NetworkImage(
-                            "https://mythicserver.herokuapp.com/public/${data.profilleImage!}")
-                        : null,
+                    backgroundImage:
+                        data.profilleImage != null || data.profilleImage == ""
+                            ? CachedNetworkImageProvider(
+                                "https://mythicserver.herokuapp.com/public/${data.profilleImage!}",
+                              )
+                            : null,
                     radius: 15,
                     child:
                         data.profilleImage == null || data.profilleImage == ""

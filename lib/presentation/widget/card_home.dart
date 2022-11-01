@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mythic_design/common/thema_app.dart';
 import 'package:mythic_design/domain/enities/product.dart';
@@ -42,7 +43,8 @@ class CardHome extends StatelessWidget {
                   borderRadius: BorderRadius.circular(coverPading * 1.5),
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage("https://mythicserver.herokuapp.com/public/${product.productImage}"))),
+                      image: CachedNetworkImageProvider(
+                          "https://mythicserver.herokuapp.com/public/${product.productImage}"))),
             ),
             Text(product.productName,
                 style: const TextStyle(
@@ -60,7 +62,8 @@ class CardHome extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 20,
                     backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage("https://mythicserver.herokuapp.com/public/${product.creatorImage}"),
+                    backgroundImage: CachedNetworkImageProvider(
+                        "https://mythicserver.herokuapp.com/public/${product.creatorImage}"),
                   ),
                 ),
                 const SizedBox(width: coverPading / 2),

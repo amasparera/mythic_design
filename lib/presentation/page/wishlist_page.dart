@@ -184,7 +184,7 @@ class _WishlistPageState extends State<WishlistPage> {
                                     const Spacer(),
                                     TextButton(
                                         style: TextButton.styleFrom(
-                                            primary: Colors.grey),
+                                            backgroundColor: Colors.grey),
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
@@ -196,7 +196,7 @@ class _WishlistPageState extends State<WishlistPage> {
                                     const SizedBox(width: 25),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colors.red),
+                                            backgroundColor: Colors.red),
                                         onPressed: () {
                                           context
                                               .read<WishlistNothifier>()
